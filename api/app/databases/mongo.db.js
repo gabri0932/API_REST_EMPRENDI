@@ -12,4 +12,4 @@ async function run(){
         console.log(error)
     }
 }
-export default run
+export default run 
