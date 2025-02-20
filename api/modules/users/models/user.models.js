@@ -3,31 +3,58 @@ import { getMongoDB } from "../../../app/databases/mongo.db.js";
 const USERS_COLLECTION = process.env.USERS_COLLECTION // obtengo la variable user collection del .env
 
 export class UserModels {
-    static async GetUsersByName({name}){
+    static async GetUser({ _id }){
         try{
             const client = await getMongoDB()
             const collection = client.collection(USERS_COLLECTION)
-            const result = collection.find({name})
-            return {success: true, data: { users: result}}
-        }catch{
+            const result = collection.find({ _id })
 
+            return {
+                success: true,
+                data: {
+                    user: result
+                }
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                console.dir('Error in UserModel.GetUser():', error);
+
+                return {
+                    success: false,
+                    error: {
+                        status: 500
+                    }
+                } 
+            }
         }
-    }
-    static async GetUser({_id}){
+        
+    };
+
+    static async GetUsersByName({ name }){
         try{
             const client = await getMongoDB()
             const collection = client.collection(USERS_COLLECTION)
-            const result = collection.find({_id})
-            return {sucess: true, data: {user:result}}
-        }catch{
-            
+            const result = collection.find({ name })
+
+            return {
+                success: true,
+                data: {
+                    users: result
+                }
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                console.dir('Error in UserModels.GetUsersByName():', error);
+
+                return {
+                    success: false,
+                    error: {
+                        status: 500
+                    }
+                } 
+            }
         }
-        
-    }
-        
-    static async GetUsers(){
-        
-    }
+    };
 
     static async CreateUser({ name, email, role, password }){
         try {
@@ -70,19 +97,16 @@ export class UserModels {
                 }
             }
         }
-    }
+    };
 
-    static async UpdateUser(){}
+    static async UpdateUser() {}
 
-    static async DeleteUser(){}
+    static async DeleteUser() {}
 }
 
 (async () => {
-    const result = await UserModels.CreateUser({
-        name: 'Gabriel',
-        email: 'gabriel@gmail.com',
-        role: 'freelancer',
-        password: 'gabriel200'
+    const result = await UserModels.GetUser({
+        _id: '67b7a8805c03361ca8b55d1f'
     });
 
     console.dir(result, { depth: null });
