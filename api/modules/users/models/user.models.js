@@ -104,11 +104,11 @@ export class UserModels {
 
     static async DeleteUser() {}
 }
-
+/*
 (async () => {
     const result = await UserModels.GetUser({
         _id: new ObjectId('67b79b5d7c1f0db9a05d65ac')
     });
 
     console.dir(result, { depth: null });
-})();
+})(); */
