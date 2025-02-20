@@ -3,9 +3,30 @@ import { getMongoDB } from "../../../app/databases/mongo.db.js";
 const USERS_COLLECTION = process.env.USERS_COLLECTION // obtengo la variable user collection del .env
 
 export class UserModels {
-    static async GetUser(){}
+    static async GetUsersByName({name}){
+        try{
+            const client = await getMongoDB()
+            const collection = client.collection(USERS_COLLECTION)
+            const result = collection.find({name})
+            return {success: true, data: { users: result}}
+        }catch{
 
-    static async GetUsers(){}
+        }
+    }
+    static async GetUser({_id}){
+        try{
+            const client = await getMongoDB()
+            const collection = client.collection(USERS_COLLECTION)
+            const result = collection.find({_id})
+        }catch{
+            const result = 'no se puede encontrar el usuario'
+        }
+        
+    }
+        
+    static async GetUsers(){
+        
+    }
 
     static async CreateUser({ name, email, role, password }){
         try {
