@@ -7,7 +7,7 @@ export class UserModels {
 
     static async GetUsers(){}
 
-    static async CreateUser({ name, email, password }){
+    static async CreateUser({ name, email, role, password }){
         try {
             const client = await getMongoDB() // obtengo el cliente de forma asincrónica
             const collection = client.collection(USERS_COLLECTION);
@@ -15,6 +15,7 @@ export class UserModels {
             const user = {
                 name,
                 email,
+                role,
                 password,
                 createAt: Date.now(),
                 updatedAt: Date.now()
@@ -56,9 +57,10 @@ export class UserModels {
 
 (async () => {
     const result = await UserModels.CreateUser({
-        name: 'Darlin Arias',
-        email: 'darlin.code@gmail.com',
-        password: 'Darlin_123'
+        name: 'Gabriel',
+        email: 'gabriel@gmail.com',
+        role: 'freelancer',
+        password: 'gabriel200'
     });
 
     console.dir(result, { depth: null });
