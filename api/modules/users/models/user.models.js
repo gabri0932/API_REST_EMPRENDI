@@ -27,6 +27,7 @@ export class UserModels {
         }catch(error){
             if(error instanceof Error){
                 Console.dir('Error in createUser():', error)
+                return {success: false, error: {status:500}}
             }
             
         }
