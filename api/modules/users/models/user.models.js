@@ -18,8 +18,9 @@ export class UserModels {
             const client = await getMongoDB()
             const collection = client.collection(USERS_COLLECTION)
             const result = collection.find({_id})
+            return {sucess: true, data: {user:result}}
         }catch{
-            const result = 'no se puede encontrar el usuario'
+            
         }
         
     }
