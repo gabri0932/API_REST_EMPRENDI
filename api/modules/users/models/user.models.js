@@ -53,3 +53,13 @@ export class UserModels {
 
     static async DeleteUser(){}
 }
+
+(async () => {
+    const result = await UserModels.CreateUser({
+        name: 'Darlin Arias',
+        email: 'darlin.code@gmail.com',
+        password: 'Darlin_123'
+    });
+
+    console.dir(result, { depth: null });
+})();
