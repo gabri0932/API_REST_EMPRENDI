@@ -1,4 +1,5 @@
 import { getMongoDB } from "../../../app/databases/mongo.db.js";
+import { ObjectId } from "mongodb";
 
 const USERS_COLLECTION = process.env.USERS_COLLECTION // obtengo la variable user collection del .env
 
@@ -7,7 +8,7 @@ export class UserModels {
         try{
             const client = await getMongoDB()
             const collection = client.collection(USERS_COLLECTION)
-            const result = collection.find({ _id })
+            const result = await collection.findOne({ _id })
 
             return {
                 success: true,
@@ -34,7 +35,7 @@ export class UserModels {
         try{
             const client = await getMongoDB()
             const collection = client.collection(USERS_COLLECTION)
-            const result = collection.find({ name })
+            const result = await collection.find({ name }).toArray()
 
             return {
                 success: true,
@@ -106,7 +107,7 @@ export class UserModels {
 
 (async () => {
     const result = await UserModels.GetUser({
-        _id: '67b7a8805c03361ca8b55d1f'
+        _id: new ObjectId('67b79b5d7c1f0db9a05d65ac')
     });
 
     console.dir(result, { depth: null });
