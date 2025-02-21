@@ -102,7 +102,29 @@ export class UserModels {
 
     static async UpdateUser() {}
 
-    static async DeleteUser() {}
+    static async DeleteUser({_id}) {
+        try{
+            const client = await getMongoDB() //obtengo el cliente de la base de datos
+            const collection = client.collection(USERS_COLLECTION) //hago una coleccion de todos los datos de la base de datos
+            if(collection){
+                const result = {_id}.findOne(collection)
+            }
+
+        }catch(error){
+            if(error instanceof Error){
+                console.dire("Error in DeleteUser()", error)
+                return {
+                    sucess: false,
+                    error: {
+                        status: 500
+                    }
+                }
+            }
+
+        }finally{
+
+        }
+    }
 }
 /*
 (async () => {
