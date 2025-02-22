@@ -1,5 +1,4 @@
 import { getMongoDB } from "../../../app/databases/mongo.db.js";
-import { ObjectId } from "mongodb";
 
 const USERS_COLLECTION = process.env.USERS_COLLECTION // obtengo la variable user collection del .env
 
@@ -102,30 +101,43 @@ export class UserModels {
 
     static async UpdateUser() {}
 
-    static async DeleteUser({_id}) {
+    static async DeleteUser({ _id }) {
         try{
-            const client = await getMongoDB() //obtengo el cliente de la base de datos
-            const collection = client.collection(USERS_COLLECTION) //hago una coleccion de todos los datos de la base de datos
-            if(collection){
-                const result = collection.findOne({_id}) //
+            const client = await getMongoDB();
+            const collection = client.collection(USERS_COLLECTION);
+
+            const deleteResult = await collection.deleteOne({
+                _id
+            });
+
+            if (!deleteResult.acknowledged) return {
+                success: false,
+                error: {
+                    status: 500
+                }
             }
 
-        }catch(error){
+            if (!deleteResult.deletedCount) return {
+                success: false,
+                error: {
+                    status: 404
+                }
+            }
+        } catch(error) {
             if(error instanceof Error){
-                console.dire("Error in DeleteUser()", error)
+                console.dir("Error in DeleteUser():", error);
+
                 return {
-                    sucess: false,
+                    success: false,
                     error: {
                         status: 500
                     }
                 }
             }
-
-        }finally{
-
         }
     }
 }
+
 /*
 (async () => {
     const result = await UserModels.GetUser({
