@@ -80,7 +80,7 @@ export class UserModels {
             if(error instanceof Error) return {
                 sucess: false,
                 error:{
-                    status: 400
+                    status: 404
                 }
             }
 
