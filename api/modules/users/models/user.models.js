@@ -188,12 +188,11 @@ export class UserModels {
 
     console.dir(result, { depth: null });
 })(); */
-
+/*
 (async () => {
-    const result = await UserModels.UpdateUser({
-        _id: new ObjectId('67b79b5d7c1f0db9a05d65ac'),
-        name: 'Gabriel mmripio.'
+    const result = await UserModels.DeleteUser({
+        _id: new ObjectId('67b7a8805c03361ca8b55d1f')
     });
 
     console.dir(result, { depth: null });
-})();
+})(); */
