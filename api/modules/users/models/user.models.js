@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { getMongoDB } from "../../../app/databases/mongo.db.js";
 
 const USERS_COLLECTION = process.env.USERS_COLLECTION // obtengo la variable user collection del .env
@@ -187,3 +188,12 @@ export class UserModels {
 
     console.dir(result, { depth: null });
 })(); */
+
+(async () => {
+    const result = await UserModels.UpdateUser({
+        _id: new ObjectId('67b79b5d7c1f0db9a05d65ac'),
+        name: 'Gabriel mmripio.'
+    });
+
+    console.dir(result, { depth: null });
+})();
