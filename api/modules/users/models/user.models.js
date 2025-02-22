@@ -1,6 +1,4 @@
-import { error } from "console";
 import { getMongoDB } from "../../../app/databases/mongo.db.js";
-import { ReturnDocument } from "mongodb";
 
 const USERS_COLLECTION = process.env.USERS_COLLECTION // obtengo la variable user collection del .env
 
@@ -101,37 +99,39 @@ export class UserModels {
         }
     };
 
-    static async UpdateUser({_id, name, email, password}) {
-        try{
-            const client = await getMongoDB()
-            const collection = client.collection(USERS_COLLECTION)
+    static async UpdateUser({ _id, name, email, password }) {
+        try {
+            const client = await getMongoDB();
+            const collection = client.collection(USERS_COLLECTION);
+
             const user = {
                 name, 
                 email,
                 password
             }
+
             const updateResult = await collection.findOneAndUpdate(
-                {_id}, //primer valor es el identificador de lo que se quiere cambiar
-                {$set: user},
+                { _id }, // primer valor es el identificador de lo que se quiere cambiar
+                { $set: user },
                 { 
-                    ReturnDocument: 'after'
+                    returnDocument: 'after'
                 }
-            )
-            if(!updateResult){
-                return {
-                    error: {
-                        status: 'NOT FOUND'
-                    },
-                    data: null
-                }
-                
+            );
+
+            if (!updateResult) return {
+                success: false,
+                error: {
+                    status: 'NOT FOUND'
+                },
             }
+
             return {
-                error: null,
+                success: true,
                 data: updateResult
             }
-        }catch(error){
-            if(error instanceof Error){
+        } catch(error) {
+            if (error instanceof Error) {
+                console.dir('Error in UserModels.DeleteUser():', error);
                 return {
                     success: false,
                     error: {
@@ -139,7 +139,6 @@ export class UserModels {
                     }
                 }
             }
-
         }
     }
 
