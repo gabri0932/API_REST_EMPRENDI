@@ -107,7 +107,7 @@ export class UserModels {
             const client = await getMongoDB() //obtengo el cliente de la base de datos
             const collection = client.collection(USERS_COLLECTION) //hago una coleccion de todos los datos de la base de datos
             if(collection){
-                const result = {_id}.findOne(collection)
+                const result = collection.findOne({_id}) //
             }
 
         }catch(error){
