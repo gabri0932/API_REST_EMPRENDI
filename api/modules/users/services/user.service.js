@@ -33,5 +33,23 @@ export class UserService {
         }
     }
 
-    static async GetUsersByName(name) {}
+    static async GetUsersByName(users) {
+        const findresult = await UserModels.GetUsersByName(users)
+        if(!findresult.success) return{
+            success: false,
+            error: {
+                status: findresult.error.status !== 500 ? 400:
+                findresult.error.status
+            }
+            
+            
+        }
+        const users = findresult.data
+        return {
+            success: true,
+            data: {
+                users
+            }
+        }
+    }
 }
