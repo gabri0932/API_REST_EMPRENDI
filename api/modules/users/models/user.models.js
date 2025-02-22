@@ -1,6 +1,4 @@
-import { ObjectId } from 'mongodb';
 import { getMongoDB } from "../../../app/databases/mongo.db.js";
-import { UserController } from '../controllers/user.controllers.js';
 
 const USERS_COLLECTION = process.env.USERS_COLLECTION // obtengo la variable user collection del .env
 
@@ -30,6 +28,12 @@ export class UserModels {
             }
         }
         
+        return {
+            success: false,
+            error: {
+                status: 500
+            }
+        }
     };
 
     static async GetUsersByName({ name }){
@@ -56,12 +60,21 @@ export class UserModels {
                 } 
             }
         }
+
+        return {
+            success: false,
+            error: {
+                status: 500
+            }
+        }
     };
-    static async GetUserbyEmail({email}){
+
+    static async GetUserByEmail({ email }){
         try{
-            const client = await getMongoDB()
-            const collection = client.collection(USERS_COLLECTION)
-            const result = await collection.findOne({email})
+            const client = await getMongoDB();
+            const collection = client.collection(USERS_COLLECTION);
+            const result = await collection.findOne({ email });
+
             if(!result){
                 return{
                     success:false,
@@ -70,29 +83,37 @@ export class UserModels {
                     }
                 }
             }
+
             return {
                 success: true,
                 data:{
                     user: result
                 }
             }
-        }catch(error){
+        } catch(error) {
             if(error instanceof Error) return {
-                sucess: false,
+                success: false,
                 error:{
-                    status: 400
+                    status: 500
                 }
             }
+        }
 
-    }
-
+        return {
+            success: false,
+            error: {
+                status: 500
+            }
+        }
     }
       
-    static async GetUsersByCredentials({email, password}){
+    static async GetUsersByCredentials({ email, password }){
         try{
-            const client = await getMongoDB()
-            const collection = client.collection(USERS_COLLECTION)
-            const result = await collection.findOne({email, password})
+            const client = await getMongoDB();
+            const collection = client.collection(USERS_COLLECTION);
+
+            const result = await collection.findOne({ email, password });
+
             if(!result){
                 return {
                     success: false,
@@ -101,13 +122,14 @@ export class UserModels {
                     }
                 }
             }
+
             return {
                 success: true,
                 data: {
                     user: result
                 }
             }
-        }catch(error){
+        } catch(error) {
             if(error instanceof Error){
                 return {
                     success: false,
@@ -117,7 +139,15 @@ export class UserModels {
                 }
             }
         }
+
+        return {
+            success: false,
+            error: {
+                status: 500
+            }
+        }
     }
+
     static async CreateUser({ name, email, role, password }){
         try {
             const client = await getMongoDB() // obtengo el cliente de forma asincrónica
@@ -157,6 +187,13 @@ export class UserModels {
                         status: 500
                     }
                 }
+            }
+        }
+
+        return {
+            success: false,
+            error: {
+                status: 500
             }
         }
     };
@@ -202,6 +239,13 @@ export class UserModels {
                 }
             }
         }
+
+        return {
+            success: false,
+            error: {
+                status: 500
+            }
+        }
     }
 
     static async DeleteUser({ _id }) {
@@ -226,6 +270,11 @@ export class UserModels {
                     status: 404
                 }
             }
+
+            return {
+                success: true,
+                data: 'OK'
+            }
         } catch(error) {
             if(error instanceof Error){
                 console.dir("Error in DeleteUser():", error);
@@ -236,6 +285,13 @@ export class UserModels {
                         status: 500
                     }
                 }
+            }
+        }
+
+        return {
+            success: false,
+            error: {
+                status: 500
             }
         }
     }
