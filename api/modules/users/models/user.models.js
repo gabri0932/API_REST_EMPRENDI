@@ -57,6 +57,37 @@ export class UserModels {
             }
         }
     };
+    static async GetUserbyEmail({email}){
+        try{
+            const client = await getMongoDB()
+            const collection = client.collection(USERS_COLLECTION)
+            const result = await collection.findOne({email})
+            if(!result){
+                return{
+                    success:false,
+                    data: {
+                        error: 404
+                    }
+                }
+            }
+            return {
+                success: true,
+                data:{
+                    user: result
+                }
+            }
+        }catch(error){
+            if(error instanceof Error) return {
+                sucess: false,
+                error:{
+                    status: 400
+                }
+            }
+
+    }
+
+    }
+      
     static async GetUsersByCredentials({email, password}){
         try{
             const client = await getMongoDB()
