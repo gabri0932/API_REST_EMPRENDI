@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { getMongoDB } from "../../../app/databases/mongo.db.js";
+import { UserController } from '../controllers/user.controllers.js';
 
 const USERS_COLLECTION = process.env.USERS_COLLECTION // obtengo la variable user collection del .env
 
@@ -56,7 +57,36 @@ export class UserModels {
             }
         }
     };
-
+    static async GetUsersByCredentials({email, password}){
+        try{
+            const client = await getMongoDB()
+            const collection = client.collection(USERS_COLLECTION)
+            const result = await collection.findOne({email, password})
+            if(!result){
+                return {
+                    success: false,
+                    error: {
+                        status: 400
+                    }
+                }
+            }
+            return {
+                success: true,
+                data: {
+                    user: result
+                }
+            }
+        }catch(error){
+            if(error instanceof Error){
+                return {
+                    success: false,
+                    error: {
+                        status:500
+                    }
+                }
+            }
+        }
+    }
     static async CreateUser({ name, email, role, password }){
         try {
             const client = await getMongoDB() // obtengo el cliente de forma asincrónica
