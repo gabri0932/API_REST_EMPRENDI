@@ -78,8 +78,8 @@ export class UserModels {
             if(!result){
                 return{
                     success:false,
-                    data: {
-                        error: 404
+                    error: {
+                        status: 404
                     }
                 }
             }
@@ -226,11 +226,14 @@ export class UserModels {
 
             return {
                 success: true,
-                data: updateResult
+                data: {
+                    user: updateResult
+                }
             }
         } catch(error) {
             if (error instanceof Error) {
                 console.dir('Error in UserModels.DeleteUser():', error);
+                
                 return {
                     success: false,
                     error: {
