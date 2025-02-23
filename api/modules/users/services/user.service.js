@@ -2,7 +2,6 @@ import { compare } from "bcrypt";
 import { StringToObject } from "../../../shared/utils/stringToObjectId.js";
 import { UserModels } from "../models/user.models.js";
 
-
 export class UserService {
     static async GetUser({ _id }){
         const result = StringToObject(_id);
@@ -56,28 +55,31 @@ export class UserService {
     }
 
     static async GetUserByCredentials({ email, password }) {
-        const getUserbyEmailResult = await UserModels.GetUserByEmail(email)
-        if(!getUserbyEmailResult.success) return {
+        const getUserbyEmailResult = await UserModels.GetUserByEmail(email);
+
+        if (!getUserbyEmailResult.success) return {
             success: false,
             error: {
-                status: getUserbyEmailResult.error.status !== 500 ? 404:
+                status: getUserbyEmailResult.error.status !== 500 ? 404 :
                 getUserbyEmailResult.error.status
             }
         }
-        const { user: userbyEmail} = getUserbyEmailResult.data // extraigo los valores que se encontro de getuser...
-        const isSameUser = await compare(password,userbyEmail.password)
-        if(isSameUser === false){
-            return {
-                success: false,
-                error: {
-                    status: 400
-                }
+
+        const { user: userbyEmail } = getUserbyEmailResult.data // extraigo los valores que se encontro de getuser...
+
+        const isSameUser = await compare(password, userbyEmail.password);
+
+        if (!isSameUser) return {
+            success: false,
+            error: {
+                status: 400
             }
         }
+
         return {
             sucess: true,
             data: {
-                user
+                user: isSameUser
             }
         }
     };
