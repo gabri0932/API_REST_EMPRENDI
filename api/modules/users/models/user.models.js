@@ -106,7 +106,7 @@ export class UserModels {
             }
         }
     }
-      
+    /*  
     static async GetUsersByCredentials({ email, password }){
         try{
             const client = await getMongoDB();
@@ -146,7 +146,7 @@ export class UserModels {
                 status: 500
             }
         }
-    }
+    } */
 
     static async CreateUser({ name, email, role, password }){
         try {

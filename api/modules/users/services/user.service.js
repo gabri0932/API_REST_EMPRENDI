@@ -1,5 +1,7 @@
+import { compare } from "bcrypt";
 import { StringToObject } from "../../../shared/utils/stringToObjectId.js";
 import { UserModels } from "../models/user.models.js";
+
 
 export class UserService {
     static async GetUser({ _id }){
@@ -53,25 +55,30 @@ export class UserService {
         }
     }
 
-    static async GetUserByEmail({ email }) {
-        const findresult = await UserModels.GetUserByEmail({ email });
-
-        if (!findresult.success) return {
+    static async GetUserByCredentials({ email, password }) {
+        const getUserbyEmailResult = await UserModels.GetUserByEmail(email)
+        if(!getUserbyEmailResult.success) return {
             success: false,
             error: {
-                status: findresult.error.status
+                status: getUserbyEmailResult.error.status !== 500 ? 404:
+                getUserbyEmailResult.error.status
             }
         }
-
-        const { user } = findresult.data;
-
-        return{
-            success: true,
-            data:{
+        const { user: userbyEmail} = getUserbyEmailResult.data // extraigo los valores que se encontro de getuser...
+        const isSameUser = await compare(password,userbyEmail.password)
+        if(isSameUser === false){
+            return {
+                success: false,
+                error: {
+                    status: 400
+                }
+            }
+        }
+        return {
+            sucess: true,
+            data: {
                 user
             }
         }
-    }
-
-    static async GetUserByCredentials({ email, password }) {};
+    };
 }
