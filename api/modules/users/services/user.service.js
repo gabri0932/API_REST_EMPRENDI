@@ -53,5 +53,22 @@ export class UserService {
         }
     }
 
-    static async GetUserByEmail({ email }) {}
+    static async GetUserByEmail({ email }) {
+        const findresult = await UserModels.GetUserByEmail({email})
+        if(!findresult.success){
+            return{
+                success: false,
+                error: {
+                    status: findresult.error.status
+                }
+            }
+        }
+        const UserEmail = findresult.data;
+        return{
+            success: true,
+            data:{
+                UserEmail
+            }
+        }
+    }
 }
