@@ -6,7 +6,7 @@ export class UserService {
     static async GetUser({ _id }){
         const result = StringToObject(_id);
 
-        if (!result.sucess) return {
+        if (!result.success) return {
             success: false,
             error:{
                 status: 400
@@ -14,17 +14,17 @@ export class UserService {
         }
 
         const UserId = result.data;
-        const findresult = await UserModels.GetUser(UserId);
+        const findResult = await UserModels.GetUser(UserId);
 
-        if (!findresult) return {
+        if (!findResult) return {
             success: false,
             error: {
-                status: findresult.error.status !== 404 ? 500:
-                findresult.error.status
+                status: findResult.error.status !== 404 ? 500:
+                findResult.error.status
             }
         }
 
-        const user = findresult.data;
+        const user = findResult.data;
 
         return {
             success: true,
@@ -35,16 +35,16 @@ export class UserService {
     }
 
     static async GetUsersByName({ name }) {
-        const findresult = await UserModels.GetUsersByName(name);
+        const findResult = await UserModels.GetUsersByName(name);
 
-        if (!findresult.success) return {
+        if (!findResult.success) return {
             success: false,
             error: {
-                status: findresult.error.status
+                status: findResult.error.status
             }
         }
 
-        const { users } = findresult.data;
+        const { users } = findResult.data;
 
         return {
             success: true,
@@ -55,19 +55,19 @@ export class UserService {
     }
 
     static async GetUserByCredentials({ email, password }) {
-        const getUserbyEmailResult = await UserModels.GetUserByEmail(email);
+        const getUserByEmailResult = await UserModels.GetUserByEmail(email);
 
-        if (!getUserbyEmailResult.success) return {
+        if (!getUserByEmailResult.success) return {
             success: false,
             error: {
-                status: getUserbyEmailResult.error.status !== 500 ? 404 :
-                getUserbyEmailResult.error.status
+                status: getUserByEmailResult.error.status !== 500 ? 404 :
+                getUserByEmailResult.error.status
             }
         }
 
-        const { user: userbyEmail } = getUserbyEmailResult.data // extraigo los valores que se encontro de getuser...
+        const { user: userByEmail } = getUserByEmailResult.data // extraigo los valores que se encontro de getuser...
 
-        const isSameUser = await compare(password, userbyEmail.password);
+        const isSameUser = await compare(password, userByEmail.password);
 
         if (!isSameUser) return {
             success: false,
@@ -77,7 +77,7 @@ export class UserService {
         }
 
         return {
-            sucess: true,
+            success: true,
             data: {
                 user: isSameUser
             }
