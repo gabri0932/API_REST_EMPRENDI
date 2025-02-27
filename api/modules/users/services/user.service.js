@@ -1,7 +1,6 @@
 import { compare } from "bcrypt";
 import { StringToObject } from "../../../shared/utils/stringToObjectId.js";
 import { UserModels } from "../models/user.models.js";
-import { strictObject } from "zod";
 
 export class UserService {
     static async GetUser({ _id }){
@@ -84,49 +83,47 @@ export class UserService {
             }
         }
     };
-    static async UpdateUser({_id, name, email, password}){
-        const id_result = strictObject(_id)
-        if(!id_result.success){
-            return{
-                success: false,
-                error: {
-                    status: 400
-                }
+
+    static async UpdateUser({ _id, name, email, password }){
+        const id_result = StringToObject(_id);
+
+        if (!id_result.success) return {
+            success: false,
+            error: {
+                status: 400
             }
         }
+
         const userId = id_result.data
-        const User = UserModels.UpdateUser({_id: userId, name, email, password})
-        if(!User.success) return{
+        const User = UserModels.UpdateUser({ _id: userId, name, email, password });;
+
+        if(!User.success) return {
             success: false,
             error:{
                 status: User.error.status !== 404 ? 500:
                 User.error.status
-        } }
+            }
+        }
 
         return {
-            sucess: true,
-            data:{
-                User
-            }
+            success: true,
+            data: User
         }
     }
-    static async DeleteUser({_id}){
-        const userId = UserModels.DeleteUser({_id})
-        const result = userId.data
-        if(!userId.success){
-            return{
-                success: false,
-                error: {
-                    status:400
-                }
-            }
-        }
-        return{
-            success: true,
-            data:{
-                result
+
+    static async DeleteUser({ _id }){
+        const userId = UserModels.DeleteUser({ _id });
+
+        if (!userId.success) return {
+            success: false,
+            error: {
+                status:400
             }
         }
 
+        return {
+            success: true,
+            data: null
+        }
     }
 }
