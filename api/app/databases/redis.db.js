@@ -1,20 +1,34 @@
-import {Redis} from "ioredis";
-import {REDIS_URL, REDIS_PW, REDIS_PORT} from '.env'
-let client = null
+import { Redis } from "ioredis";
+import 'dotenv/config';
+
+const REDIS_URL = process.env.REDIS_URL;
+const REDIS_PW = process.env.REDIS_PW;
+const REDIS_PORT = process.env.REDIS_PORT;
+
+let client = null;
+
 export async function getRedisClient(){
-    if(!client){
+    if (!client) {
         try{
             client = new Redis({
                 host: REDIS_URL,
                 port: REDIS_PORT,
                 password: REDIS_PW
             })
-        }catch(error){
-            if(error instanceof Error){
-                console.error('Something went wrog wit the Redis connection: ', error)
+
+            client.on('error', (err) => {
+                console.error('Redis connection error:', err);
+                throw err;
+            });
+
+            await client.ping();
+        } catch(error) {
+            if (error instanceof Error) {
+                console.error('Something went wrong wit the Redis connection: ', error);
+                throw error;
             }
         }
-        
     }
+
     return client
 }
