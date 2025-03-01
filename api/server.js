@@ -1,6 +1,10 @@
 import express from 'express';
 
-const app = express();
+import apiRoutes from './app/routes';
+const app = express()
+
+
+app.use(apiRoutes)
 
 app.use(express.json());
 
