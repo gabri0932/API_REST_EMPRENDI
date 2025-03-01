@@ -60,7 +60,7 @@ export class UserService {
         if (!getUserByEmailResult.success) return {
             success: false,
             error: {
-                status: getUserByEmailResult.error.status !== 500 ? 404 :
+                status: getUserByEmailResult.error.status !== 500 ? 400 :
                 getUserByEmailResult.error.status
             }
         }
