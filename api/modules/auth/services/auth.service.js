@@ -31,13 +31,13 @@ export class authService{
     static async deleteSession({sessionId}){
         const result = AuthModel.deleteSession({sessionId})
         if(!result.success) return{
-            sucess: false,
+            success: false,
             error: {
                 status: 500
             }
         }
         return{
-            sucess: true,
+            success: true,
             data: null
         }
     }   
