@@ -32,16 +32,18 @@ export class authService{
         }
     }
 
-    static async createSession({userId}){
-        const sessionId = crypto.randomUUID()
-        const token = singNewJet(userId)
-        const createSessionResult = await AuthModel.createSession({sessionId, token})
-        if(!createSessionResult.success){
-            return{
-                success: false,
-                error: 'Its imposible create the session'
-            }
-        }return{
+    static async createSession({ userId }){
+        const sessionId = crypto.randomUUID();
+        const token = singNewJet(userId);
+
+        const createSessionResult = await AuthModel.createSession({ sessionId, token });
+
+        if (!createSessionResult.success) return{
+            success: false,
+            error: 'Its imposible create the session'
+        }
+        
+        return {
             success: true,
             data: sessionId
         }
