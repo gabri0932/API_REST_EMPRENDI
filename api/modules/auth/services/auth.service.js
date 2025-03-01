@@ -73,5 +73,5 @@ export class authService{
             success: true,
             data: null
         }
-    }   
+    }
 }
