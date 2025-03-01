@@ -1,17 +1,20 @@
 import { AuthModel } from "../models/auth.model";
-
+import { StringToObject } from '../../../shared/utils/stringToObjectId';
 
 export class authService{
-    static async getSession({sessionId}){
-        const result = getSession({sessionId})
-        if(!result.success) return {
-            sucess: false,
+    static async getSession({ sessionId }){
+        const conversionResult = StringToObject(sessionId);
+
+        if (!conversionResult.success) return {
+            success: false,
             error: {
-                status: 400
+                status: 400,
+                message: 'Invalid session id provided.'
             }
         }
-        const UserId = result.data;
-        const findResult = await AuthModel.getSession(UserId)
+
+        const findResult = await AuthModel.getSession({ sessionId: conversionResult.data });
+
         if(!findResult.success) return{
             success: false,
             error:{
@@ -19,24 +22,38 @@ export class authService{
                 findResult.error.status
             }
         }
-        const session = findResult.data
+
+        const session = findResult.data;
+
         return {
             success: true,
-            data: {
-                session
-            }
+            data: session
         }
     }
+
     static async createSession(){}
-    static async deleteSession({sessionId}){
-        const result = AuthModel.deleteSession({sessionId})
-        if(!result.success) return{
+
+    static async deleteSession({ sessionId }) {
+        const conversionResult = StringToObject(sessionId);
+
+        if (!conversionResult.success) return {
+            success: false,
+            error: {
+                status: 400,
+                message: 'Invalid session id provided.'
+            }
+        }
+
+        const result = AuthModel.deleteSession({ sessionId: conversionResult.data });
+
+        if (!result.success) return {
             success: false,
             error: {
                 status: 500
             }
         }
-        return{
+
+        return {
             success: true,
             data: null
         }
