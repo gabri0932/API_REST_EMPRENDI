@@ -126,4 +126,7 @@ export class UserService {
             data: null
         }
     }
+    static async CreateUser({name, email,role, passowrd}){
+        const user = await UserModels.CreateUser({name, email, role, password})
+    }
 }
