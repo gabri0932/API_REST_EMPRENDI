@@ -126,7 +126,18 @@ export class UserService {
             data: null
         }
     }
-    static async CreateUser({name, email,role, passowrd}){
-        const user = await UserModels.CreateUser({name, email, role, password})
+    static async CreateUser({name, email,role, passoword}){
+        const result = await UserModels.CreateUser({name, email, role, password})
+        if(!result.success){
+            return{
+                success: false,
+                error: {
+                    status: 404
+                }
+            }
+        } return{
+            success: true,
+            data: result.data
+        }
     }
 }
