@@ -1,10 +1,12 @@
 import express from 'express';
 
 import apiRoutes from './app/routes';
+import { authRestMiddleware } from './shared/middlewares/auth.middleware';
 const app = express()
 
 // Top level middlewares
 app.use(express.json());
+app.use(authRestMiddleware)
 
 // Routes.
 app.get('/', (req, res) => {

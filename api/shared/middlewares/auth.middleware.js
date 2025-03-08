@@ -1,5 +1,6 @@
-import { validateUserAuth } from '@shared/utils/validateUserAuth.js';
-import { UserService } from '../../modules/users/services/user.service';
+
+import { UsersService } from '@users/services/users.service.js';
+
 
 export async function authRestMiddleware(req, res, next) {
     const sessionId = req.headers.authorization?.split(' ')[1];
@@ -16,25 +17,21 @@ export async function authRestMiddleware(req, res, next) {
     const validationUserAuthResult = await validateUserAuth({ sessionId });
 
     if (!validationUserAuthResult.success) {
-        res.status(validationUserAuthResult.error.status || 500).json({
-            ...validationUserAuthResult.error
-        });
+        req.auth = {
+            user: null,
+            session: null
+        };
 
-        return;
+        return next(validationUserAuthResult.error);
     }
 
     const { _id } = validationUserAuthResult.data;
 
-    const userData = await UserService.GetUser({ _id: _id.toString() });
+    const userData = await UsersService.getUserById({ id: _id.toString() });
 
-    if (!userData.success) {
-        res.status(500).json({
-            status: 500,
-            message: 'Internal Server Error.'
-        });
-
-        return;
-    };
+    if (!userData.success) return next(new ControllerError({
+        code: 'INTERNAL_SERVER_ERROR'
+    }));
 
     req.auth = {
         user: userData.data,
