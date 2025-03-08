@@ -15,7 +15,7 @@ export async function validateUserAuth({ sessionId }) {
     const tokenCheck = validateJWT({ token });
 
     if (!tokenCheck.success) {
-        AuthService.deleteSession(sessionId);
+        authService.deleteSession({ sessionId });
 
         return {
             success: false,

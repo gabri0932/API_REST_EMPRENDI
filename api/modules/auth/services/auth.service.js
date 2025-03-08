@@ -34,7 +34,7 @@ export class authService{
 
     static async createSession({ userId }){
         const sessionId = crypto.randomUUID();
-        const token = singNewJet(userId);
+        const token = singNewJet({ _id: userId });
 
         const createSessionResult = await AuthModel.createSession({ sessionId, token });
 
