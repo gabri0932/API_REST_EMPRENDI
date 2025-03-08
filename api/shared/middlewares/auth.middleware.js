@@ -1,4 +1,4 @@
-import { validateUserAuth } from '@shared/utils/validateUserAuth.js';
+import { validateUserAuth } from '../utils/validateUserAuth';
 import { UserService } from '../../modules/users/services/user.service';
 
 export async function authRestMiddleware(req, res, next) {
