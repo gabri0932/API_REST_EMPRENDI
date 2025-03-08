@@ -1,5 +1,5 @@
-import { validateUserAuth } from '../utils/validateUserAuth';
-import { UserService } from '../../modules/users/services/user.service';
+import { validateUserAuth } from '../utils/validateUserAuth.js';
+import { UserService } from '../../modules/users/services/user.service.js';
 
 export async function authRestMiddleware(req, res, next) {
     const sessionId = req.headers.authorization?.split(' ')[1];

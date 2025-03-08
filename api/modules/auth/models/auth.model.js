@@ -1,4 +1,4 @@
-import { getRedisClient } from "../../../app/databases/redis.db";
+import { getRedisClient } from "../../../app/databases/redis.db.js";
 
 export class AuthModel{
     static async getSession({ sessionId }){

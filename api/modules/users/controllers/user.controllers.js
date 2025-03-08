@@ -1,5 +1,5 @@
-import { measureMemory } from "vm";
-import { UserService } from "../services/user.service";
+import { UserService } from "../services/user.service.js";
+
 export class UserController{
      // métodos son las cosas que puedes hacer en ese plano
     static async UpdateUser(req, res){

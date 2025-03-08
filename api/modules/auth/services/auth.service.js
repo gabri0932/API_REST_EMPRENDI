@@ -1,6 +1,6 @@
-import { AuthModel } from "../models/auth.model";
-import { StringToObject } from '../../../shared/utils/stringToObjectId';
-import { singNewJet } from "../../../shared/utils/jwtMethods";
+import { AuthModel } from "../models/auth.model.js";
+import { StringToObject } from '../../../shared/utils/stringToObjectId.js';
+import { singNewJet } from "../../../shared/utils/jwtMethods.js";
 
 export class authService{
     static async getSession({ sessionId }){

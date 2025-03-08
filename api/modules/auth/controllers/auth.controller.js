@@ -1,7 +1,7 @@
-import { UserService } from "../../users/services/user.service";
-import { authService } from "../services/auth.service";
-import { validateUserInput } from "../validators/auth.validator";
-import { validateUserCreation } from "../validators/auth.validator";
+import { UserService } from "../../users/services/user.service.js";
+import { authService } from "../services/auth.service.js";
+import { validateUserInput } from "../validators/auth.validator.js";
+import { validateUserCreation } from "../validators/auth.validator.js";
 
 export class AuthController{
     static async verify(req, res){

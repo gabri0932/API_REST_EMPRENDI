@@ -1,7 +1,7 @@
 import express from 'express';
+import apiRoutes from './app/routes.js';
+import { authRestMiddleware } from './shared/middlewares/auth.middleware.js';
 
-import apiRoutes from './app/routes';
-import { authRestMiddleware } from './shared/middlewares/auth.middleware';
 const app = express()
 
 // Top level middlewares
