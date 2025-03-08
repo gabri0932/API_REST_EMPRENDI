@@ -174,8 +174,7 @@ export class UserModels {
             return {
                 success: true,
                 data: {
-                    _id: insertResult.insertedId,
-                    ...user
+                    _id: insertResult.insertedId
                 } // si salio bien retorna nos datos, y el resultado success
             }
         } catch(error) {

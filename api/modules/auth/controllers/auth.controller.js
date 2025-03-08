@@ -16,6 +16,7 @@ export class AuthController{
         if (!validation.success) {
             res.status(400).json({
                 status: 400,
+                message: 'Bad request, check the request body.',
                 error: JSON.parse(validationResult.error.message)
             });
 
@@ -42,24 +43,38 @@ export class AuthController{
     };
     
     static async signup(req, res){
-        const request = req.body
-        const validateResult = validateUserCreation(request)
-        if(!validateResult.success){
+        const request = req.body;
+        const validateResult = validateUserCreation(request);
+
+        if (!validateResult.success) {
+            res.status(400).json({
+                status: 400,
+                message: 'Bad request, check the request body.',
+                error: JSON.parse(validateResult.error.message)
+            });
+
+            return;
+        }
+
+        const createResult = await UserService.CreateUser(validateResult.data);
+
+        if (!createResult.success) {
             res.status(500).json({
                 status: 500,
-                message: "Error with Signup of the aplication"
-            })
+                message: 'Something went wrong.'
+            });
+
+            return;
         }
-        const data = UserService.CreateUser(validateResult.data)
-        if(!data.success){
-            res.status(500).json({
-                status:404,
-                message: "Error with the function"
-            })
-        }res.status(200).json({
-            status:200,
-            message: "Welcome...."
+        
+        res.status(201).json({
+            status: 201,
+            message: 'Signed up successfully.',
+            data: {
+                userId: createResult.data
+            }
         })
     };
+    
     static async signout(req, res){};
 }
