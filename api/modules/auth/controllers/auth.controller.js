@@ -12,7 +12,14 @@ export class AuthController{
             })
             return
         }
-       
+       const {password: _,authUser} = req.auth.user
+       res.status(200).json({
+        status:200,
+        message: 'Verified user',
+        data: {
+            user: authUser
+        }
+       })
     };
 
     static async signin(req, res){
