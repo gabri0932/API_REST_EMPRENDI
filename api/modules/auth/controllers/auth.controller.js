@@ -27,8 +27,6 @@ export class AuthController{
         
         const findResult = await UserService.GetUserByCredentials(userCredentials);
 
-        console.log(findResult);
-
         if (!findResult.success) {
             res.status(401).json({
                 status:401,
@@ -38,9 +36,25 @@ export class AuthController{
             return;
         }
 
+        const createSessionResult = await authService.createSession({
+            userId: findResult.data._id
+        });
+
+        if (!createSessionResult.success) {
+            res.status(500).json({
+                status: 500,
+                message: 'Internal Server Error.'
+            });
+
+            return;
+        }
+
         res.status(200).json({
-            status:200,
-            message: 'Logged in successfully.'
+            status: 200,
+            message: 'Logged in successfully.',
+            data: {
+                sessionId: createSessionResult.data
+            }
         });
     };
     

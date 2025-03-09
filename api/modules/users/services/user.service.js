@@ -79,7 +79,7 @@ export class UserService {
         return {
             success: true,
             data: {
-                user: isSameUser
+                user: getUserByEmailResult.data
             }
         }
     };
