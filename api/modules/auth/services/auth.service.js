@@ -4,23 +4,12 @@ import { singNewJet } from "../../../shared/utils/jwtMethods.js";
 
 export class authService{
     static async getSession({ sessionId }){
-        const conversionResult = StringToObject(sessionId);
-
-        if (!conversionResult.success) return {
-            success: false,
-            error: {
-                status: 400,
-                message: 'Invalid session id provided.'
-            }
-        }
-
-        const findResult = await AuthModel.getSession({ sessionId: conversionResult.data });
+        const findResult = await AuthModel.getSession({ sessionId });
 
         if(!findResult.success) return{
             success: false,
             error:{
-                status: findResult.error.status !== 400 ? 500:
-                findResult.error.status
+                status: findResult.error.status
             }
         }
 

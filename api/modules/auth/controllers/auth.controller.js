@@ -5,21 +5,24 @@ import { validateUserCreation } from "../validators/auth.validator.js";
 
 export class AuthController{
     static async verify(req, res){
-        if(!req.auth.user){
+        if (!req.auth.user) {
             res.status(400).json({
-                status:400,
-                message: 'user not found'
-            })
-            return
+                status: 400,
+                message: 'Unauthorized, sign in.'
+            });
+
+            return;
         }
-       const {password: _,authUser} = req.auth.user
-       res.status(200).json({
-        status:200,
-        message: 'Verified user',
-        data: {
-            user: authUser
-        }
-       })
+
+        const { password: _, ...authUser } = req.auth.user;
+
+        res.status(200).json({
+            status: 200,
+            message: 'Valid session.',
+            data: {
+                user: authUser
+            }
+        });
     };
 
     static async signin(req, res){
