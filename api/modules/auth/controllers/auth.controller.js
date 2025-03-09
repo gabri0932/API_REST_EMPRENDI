@@ -109,5 +109,24 @@ export class AuthController{
         })
     };
     
-    static async signout(req, res){};
+    static async signout(req, res){
+        if(!req.auth.session){
+            res.status(500).json({
+                status: 401,
+                message: 'Session not found'
+            }) 
+        }
+        const session = {
+            sessionId: req.auth.session
+        }
+        
+        const deletion = await authService.deleteSession(session)
+        if(!deletion.success){
+            res.status(500)
+        }
+        res.status(200).json({
+            status:200,
+            message: 'Session delete successfully'
+        })
+    };
 }
