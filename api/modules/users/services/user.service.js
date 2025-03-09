@@ -65,7 +65,7 @@ export class UserService {
             }
         }
 
-        const { user: userByEmail } = getUserByEmailResult.data // extraigo los valores que se encontro de getuser...
+        const userByEmail = getUserByEmailResult.data // extraigo los valores que se encontro de getuser...
 
         const isSameUser = await compare(password, userByEmail.password);
 
