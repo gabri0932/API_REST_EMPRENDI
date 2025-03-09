@@ -76,11 +76,11 @@ export class UserService {
             }
         }
 
+        const { data } = getUserByEmailResult;
+
         return {
             success: true,
-            data: {
-                user: getUserByEmailResult.data
-            }
+            data
         }
     };
 
