@@ -5,6 +5,13 @@ import { validateUserCreation } from "../validators/auth.validator.js";
 
 export class AuthController{
     static async verify(req, res){
+        if(!req.auth.user){
+            res.status(400).json({
+                status:400,
+                message: 'user not found'
+            })
+            return
+        }
        
     };
 
