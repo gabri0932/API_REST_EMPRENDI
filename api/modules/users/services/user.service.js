@@ -1,4 +1,4 @@
-import { compare } from "bcrypt";
+import { compare, hash } from "bcrypt";
 import { StringToObject } from "../../../shared/utils/stringToObjectId.js";
 import { UserModels } from "../models/user.models.js";
 
@@ -117,7 +117,7 @@ export class UserService {
         if (!userId.success) return {
             success: false,
             error: {
-                status:400
+                status: 500
             }
         }
 
@@ -127,8 +127,9 @@ export class UserService {
         }
     }
     
-    static async CreateUser({ name, email,role, password }){
-        const result = await UserModels.CreateUser({ name, email, role, password });
+    static async CreateUser({ name, email, role, password }){
+        const encryptedPw = await hash(password, 10);
+        const result = await UserModels.CreateUser({ name, email, role, password: encryptedPw });
 
         if (!result.success) return {
             success: false,
@@ -139,7 +140,7 @@ export class UserService {
         
         return {
             success: true,
-            data: result.data
+            data: result.data._id
         }
     }
 }

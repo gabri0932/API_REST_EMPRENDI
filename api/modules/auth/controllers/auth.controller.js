@@ -13,7 +13,7 @@ export class AuthController{
 
         const validationResult = validateUserInput(request);
 
-        if (!validation.success) {
+        if (!validationResult.success) {
             res.status(400).json({
                 status: 400,
                 message: 'Bad request, check the request body.',

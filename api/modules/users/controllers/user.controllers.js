@@ -17,15 +17,15 @@ export class UserController{
         
         res.status(200).json({
             status:200,
-            message: 'User update successfully'
+            message: 'User updated successfully.'
         })
     }
 
-    static async deleteUser(req, res){
-        const {userId} = req.params;
-        const dataDelete = await UserService.DeleteUser({_id: userId});
+    static async deleteUser (req, res) {
+        const { userId } = req.params;
+        const dataDelete = await UserService.DeleteUser({ _id: userId });
 
-        if(!dataDelete.success) {
+        if (!dataDelete.success) {
             res.status(dataDelete.error.status).json({
                 status: dataDelete.error.status,
                 message: dataDelete.error.status === 500? 'Internal server Error' : 'Something went wrong'
@@ -33,8 +33,8 @@ export class UserController{
         }
 
         res.status(200).json({
-            status:200,
-            message: 'User delete successfully'
+            status: 200,
+            message: 'User deleted successfully.'
         })
     }
 } // las clases son como planos en los cuales puedes hacer diferentes cosas
