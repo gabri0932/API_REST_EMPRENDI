@@ -27,6 +27,8 @@ export class AuthController{
         
         const findResult = await UserService.GetUserByCredentials(userCredentials);
 
+        console.log(findResult);
+
         if (!findResult.success) {
             res.status(401).json({
                 status:401,

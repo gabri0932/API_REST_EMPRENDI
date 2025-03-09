@@ -55,7 +55,7 @@ export class UserService {
     }
 
     static async GetUserByCredentials({ email, password }) {
-        const getUserByEmailResult = await UserModels.GetUserByEmail(email);
+        const getUserByEmailResult = await UserModels.GetUserByEmail({ email });
 
         if (!getUserByEmailResult.success) return {
             success: false,

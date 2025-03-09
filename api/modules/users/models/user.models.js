@@ -106,6 +106,7 @@ export class UserModels {
             }
         }
     }
+    
     /*  
     static async GetUsersByCredentials({ email, password }){
         try{
