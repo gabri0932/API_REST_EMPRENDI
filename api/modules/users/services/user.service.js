@@ -14,7 +14,7 @@ export class UserService {
         }
 
         const UserId = result.data;
-        const findResult = await UserModels.GetUser(UserId);
+        const findResult = await UserModels.GetUser({ _id: UserId });
 
         if (!findResult) return {
             success: false,
@@ -28,9 +28,7 @@ export class UserService {
 
         return {
             success: true,
-            data: {
-                user
-            }
+            data: user
         }
     }
 

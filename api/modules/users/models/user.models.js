@@ -11,9 +11,7 @@ export class UserModels {
 
             return {
                 success: true,
-                data: {
-                    user: result
-                }
+                data: result
             }
         } catch (error) {
             if (error instanceof Error) {
