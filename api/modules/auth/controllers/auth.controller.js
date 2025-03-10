@@ -110,23 +110,33 @@ export class AuthController{
     };
     
     static async signout(req, res){
-        if(!req.auth.session){
-            res.status(500).json({
+        if (!req.auth.session) {
+            res.status(401).json({
                 status: 401,
-                message: 'Session not found'
-            }) 
+                message: 'Unauthorized, please sign in.'
+            });
+
+            return;
         }
+        
         const session = {
             sessionId: req.auth.session
         }
         
-        const deletion = await authService.deleteSession(session)
-        if(!deletion.success){
-            res.status(500)
+        const deletionResult = await authService.deleteSession(session);
+
+        if (!deletionResult.success) {
+            res.status(500).json({
+                status: 500,
+                message: 'Internal Server Error.'
+            });
+
+            return;
         }
+
         res.status(200).json({
-            status:200,
-            message: 'Session delete successfully'
-        })
+            status: 200,
+            message: 'Session deleted successfully.'
+        });
     };
 }
