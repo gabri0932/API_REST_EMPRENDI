@@ -7,7 +7,7 @@ export class AuthModel{
             const session = await client.get(sessionId);
 
             if (!session) return {
-                success: falsa,
+                success: false,
                 error: {
                     status: 404
                 }
@@ -18,8 +18,8 @@ export class AuthModel{
                 data: session
             }
         } catch (error) {
-            if(error instanceof Error){
-                console.dir('Error in function getSession:', error);
+            if (error instanceof Error) {
+                console.log('Error in function getSession:', error);
 
                 return {
                     success: false,
@@ -51,7 +51,7 @@ export class AuthModel{
             }
         } catch (error) {
             if(error instanceof Error){
-                console.dir('Error in function createSession:', error);
+                console.log('Error in function createSession:', error);
 
                 return {
                     success: false,
@@ -66,7 +66,7 @@ export class AuthModel{
     static async deleteSession({ sessionId }){
         try {
             const client = await getRedisClient();
-            const deleteUserResult = client.del(sessionId);
+            const deleteUserResult = await client.del(sessionId);
 
             if (!deleteUserResult) return {
                 success: false,
@@ -80,8 +80,8 @@ export class AuthModel{
                 data: null
             }
         } catch (error) {
-            if(error instanceof Error){
-                console.dir('Error in function deleteSession:', error);
+            if (error instanceof Error) {
+                console.log('Error in function deleteSession:', error);
 
                 return {
                     success: false,

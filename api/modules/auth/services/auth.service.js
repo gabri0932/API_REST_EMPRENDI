@@ -1,5 +1,4 @@
 import { AuthModel } from "../models/auth.model.js";
-import { StringToObject } from '../../../shared/utils/stringToObjectId.js';
 import { singNewJet } from "../../../shared/utils/jwtMethods.js";
 
 export class authService{
@@ -39,17 +38,7 @@ export class authService{
     }
 
     static async deleteSession({ sessionId }) {
-        const conversionResult = StringToObject(sessionId);
-
-        if (!conversionResult.success) return {
-            success: false,
-            error: {
-                status: 400,
-                message: 'Invalid session id provided.'
-            }
-        }
-
-        const result = AuthModel.deleteSession({ sessionId: conversionResult.data });
+        const result = await AuthModel.deleteSession({ sessionId });
 
         if (!result.success) return {
             success: false,
