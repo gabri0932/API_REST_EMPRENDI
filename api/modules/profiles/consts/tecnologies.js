@@ -15,6 +15,8 @@ export const tecnologies = {
     VUE: 'vue',
     ANGULAR: 'angular',
     NODEJS: 'nodejs',
+    EXPRESS: 'express',
+    REACT: 'react',
     ANDROID: 'android',
     IOS: 'ios'
 }
