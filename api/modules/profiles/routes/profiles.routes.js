@@ -5,7 +5,8 @@ const profilesRouter = Router();
 profilesRouter.get('/', );
 profilesRouter.get('/:id', );
 profilesRouter.post('/', );
+profilesRouter.post('/hire/:id', );
+profilesRouter.patch('/', );
 profilesRouter.delete('/', );
-profilesRouter.put('/', );
 
 export default profilesRouter;
