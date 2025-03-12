@@ -45,5 +45,50 @@ export class ProfileModels{
     
     static async getProfiles(){}
     static async updateProfile(){}
-    static async deleteProfile(){}
+    static async deleteProfile({publicId}){
+        try{
+            const client = await getMongoDB()
+            const collection = client.collection(PROFILE_COLLECTION)
+            const deleteResult = await collection.deleteOne({
+                publicId
+            })
+            if(!deleteResult.acknowledged){
+                return{
+                    success: false,
+                    error: {
+                        status: 500
+                    }
+                }
+            }
+            if(!deleteResult.deleteCount){
+                return{
+                    success: false,
+                    error:{
+                        status: 404
+                    }
+                }
+            }
+            return {
+                success: true,
+                data: 'OK'
+            }
+        }catch(error){  
+            if(error instanceof Error){
+                console.dir('Error in DeleteProfile(): ', error)
+                return{
+                    success: false,
+                    error: {
+                        status: 500
+                    }
+                }
+            }
+            return{
+                success: false,
+                error: {
+                    status: 500
+                }
+            }
+
+        }
+    }
 }
