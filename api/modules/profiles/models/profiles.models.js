@@ -1,8 +1,9 @@
-import 'dotenv/config'
-import { getMongoDB } from '../../../app/databases/mongo.db'
+import { getMongoDB } from '../../../app/databases/mongo.db.js';
+import 'dotenv/config';
+
 const PROFILE_COLLECTION = process.env.PROFILE_COLLECTION
 
-export class ProfileModels{
+export class ProfilesModel{
     static async getProfile({ publicId }){
         try{
             const client = await getMongoDB();
@@ -42,53 +43,60 @@ export class ProfileModels{
             }
         }
     }
-    
+
     static async getProfiles(){}
     static async updateProfile(){}
-    static async deleteProfile({publicId}){
-        try{
-            const client = await getMongoDB()
-            const collection = client.collection(PROFILE_COLLECTION)
+
+    static async deleteProfile({ _id }){
+        try {
+            const client = await getMongoDB();
+            const collection = client.collection(PROFILE_COLLECTION);
+
             const deleteResult = await collection.deleteOne({
-                publicId
+                _id
             })
-            if(!deleteResult.acknowledged){
-                return{
+
+            if (!deleteResult.acknowledged) {
+                return {
                     success: false,
                     error: {
                         status: 500
                     }
                 }
             }
-            if(!deleteResult.deleteCount){
-                return{
+
+            if (!deleteResult.deleteCount) {
+                return {
                     success: false,
-                    error:{
+                    error: {
                         status: 404
                     }
                 }
             }
+
             return {
                 success: true,
                 data: 'OK'
             }
-        }catch(error){  
-            if(error instanceof Error){
-                console.dir('Error in DeleteProfile(): ', error)
-                return{
+        } catch(error) {  
+            if (error instanceof Error) {
+                console.log('Error in ProfilesModel.deleteProfile():\n');
+                console.dir(error);
+
+                return {
                     success: false,
                     error: {
                         status: 500
                     }
                 }
             }
-            return{
-                success: false,
-                error: {
-                    status: 500
-                }
-            }
+        }
 
+        return {
+            success: false,
+            error: {
+                status: 500
+            }
         }
     }
 }
