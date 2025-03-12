@@ -1,0 +1,20 @@
+export const tecnologies = {
+    JAVASCRIPT: 'javascript',
+    TYPESCRIPT: 'typescript',
+    PYTHON: 'python',
+    MYSQL: 'mysql',
+    POSTGRESQL: 'postgresql',
+    SQLITE: 'sqlite',
+    MONGODB: 'mongodb',
+    PHP: 'php',
+    JAVA: 'java',
+    RUBY: 'ruby',
+    SWIFT: 'swift',
+    CSS: 'css',
+    HTML: 'html',
+    VUE: 'vue',
+    ANGULAR: 'angular',
+    NODEJS: 'nodejs',
+    ANDROID: 'android',
+    IOS: 'ios'
+}
