@@ -14,5 +14,5 @@ export function applyFilters(filters) {
         return acc;
     }, []);
 
-    return queries.length ? { $and: queries } : {};
+    return queries;
 }

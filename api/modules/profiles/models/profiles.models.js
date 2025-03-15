@@ -1,7 +1,8 @@
 import { getMongoDB } from '../../../app/databases/mongo.db.js';
+import { applyFilters } from '../utils/applyFilters.js';
 import 'dotenv/config';
 
-const PROFILE_COLLECTION = process.env.PROFILE_COLLECTION
+const PROFILE_COLLECTION = process.env.PROFILE_COLLECTION;
 
 export class ProfilesModel{
     static async getProfile({ publicId }){
@@ -44,7 +45,49 @@ export class ProfilesModel{
         }
     }
 
-    static async getProfiles() {};
+    static async getProfiles({ skip, limit, filters }) {
+        try {
+            const client = await getMongoDB();
+            const collection = client.collection(PROFILE_COLLECTION);
+
+            const appliedFilters = applyFilters(filters);
+            const normalizedFilters = appliedFilters.length && appliedFilters.length > 1
+                ? { $and: appliedFilters }
+                : appliedFilters[0] || {};
+
+            const getProfilesResult = await collection.find(
+                normalizedFilters
+            ).skip(skip).limit(limit).toArray();
+            const profilesCount = await collection.countDocuments(normalizedFilters);
+
+            return {
+                success: true,
+                data: {
+                    profiles: getProfilesResult,
+                    count: profilesCount
+                }
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                console.log('Error in ProfilesModel.getProfiles():\n');
+                console.dir(error);
+
+                return {
+                    success: false,
+                    error: {
+                        status: 500
+                    }
+                }
+            }
+        }
+
+        return {
+            success: false,
+            error: {
+                status: 500
+            }
+        }
+    };
 
     static async createProfile({ profile }) {
         try {
