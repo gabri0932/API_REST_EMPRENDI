@@ -2,7 +2,7 @@ import { getMongoDB } from '../../../app/databases/mongo.db.js';
 import { applyFilters } from '../utils/applyFilters.js';
 import 'dotenv/config';
 
-const PROFILE_COLLECTION = process.env.PROFILE_COLLECTION;
+const PROFILES_COLLECTION = process.env.PROFILES_COLLECTION;
 
 export class ProfilesModel{
     static async getProfile({ publicId }){
@@ -48,9 +48,10 @@ export class ProfilesModel{
     static async getProfiles({ skip, limit, filters }) {
         try {
             const client = await getMongoDB();
-            const collection = client.collection(PROFILE_COLLECTION);
+            const collection = client.collection(PROFILES_COLLECTION);
 
             const appliedFilters = applyFilters(filters);
+            console.log('appliedFilters:', appliedFilters);
             const normalizedFilters = appliedFilters.length && appliedFilters.length > 1
                 ? { $and: appliedFilters }
                 : appliedFilters[0] || {};
