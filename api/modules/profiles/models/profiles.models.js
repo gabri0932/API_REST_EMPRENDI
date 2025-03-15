@@ -44,8 +44,11 @@ export class ProfilesModel{
         }
     }
 
-    static async getProfiles(){}
-    static async updateProfile(){}
+    static async getProfiles() {};
+
+    static async createProfile() {};
+
+    static async updateProfile() {};
 
     static async deleteProfile({ _id }){
         try {
