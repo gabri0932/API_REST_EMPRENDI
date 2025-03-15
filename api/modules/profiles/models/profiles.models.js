@@ -46,9 +46,85 @@ export class ProfilesModel{
 
     static async getProfiles() {};
 
-    static async createProfile() {};
+    static async createProfile({profile}) {
+        try{
+            const client = await getMongoDB()
+            const collection = client.collection(PROFILE_COLLECTION)
+            const result = collection.insertOne({profile})
+            if(!result.acknowledged){
+                return{
+                    success: false,
+                    error: {
+                        status: 500
+                    }
+                }
+            }
+            return {
+                success: true,
+                data: result.insertedId
+            }
+        }catch(error){
+            if(error instanceof Error){
+                console.dir('Error in create profile()', error)
+                return {
+                    success: false,
+                    error: {
+                        status: 500
+                    }
+                }
+            }
+        }
+        return {
+            success: false,
+            error: {
+                status: 500
+            }
+        }
+    };
 
-    static async updateProfile() {};
+    static async updateProfile({profileId, profile}) {
+        try{
+            const client = await getMongoDB()
+            const collection = client.collection(PROFILE_COLLECTION)
+            const updateResult = await collection.findOneAndUpdate(
+                {profileId},
+                {$set: profile},
+                {
+                    returnDocumen: 'after'
+                }
+            )
+            if(!updateResult){
+                return{
+                    success: false,
+                    error: {
+                        status: 'NOT FOUND'
+                    }
+                }
+            }
+            return{
+                success: true,
+                data: {
+                    user: updateResult
+                }
+            }
+        }catch(error){
+            if(error instanceof Error){
+                console.dire('Error in profileModels.Update()', error)
+                return {
+                    success: false,
+                    error: {
+                        status: 500
+                    }
+                }
+            }
+            return {
+                success: false,
+                error: {
+                    status: 500
+                }
+            }
+        }
+    };
 
     static async deleteProfile({ _id }){
         try {
