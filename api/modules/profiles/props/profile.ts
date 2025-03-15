@@ -9,8 +9,8 @@ export interface ProfileProps {
     name: string,
     description: string,
     images: {
-        cover: string,
-        avatar: string
+        cover: string | null,
+        avatar: string | null
     },
 }
 
