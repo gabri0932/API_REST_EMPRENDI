@@ -4,11 +4,11 @@ import 'dotenv/config';
 
 const PROFILES_COLLECTION = process.env.PROFILES_COLLECTION;
 
-export class ProfilesModel{
+export class ProfilesModel {
     static async getProfile({ publicId }){
         try{
             const client = await getMongoDB();
-            const collection = client.collection(PROFILE_COLLECTION);
+            const collection = client.collection(PROFILES_COLLECTION);
 
             const result = await collection.findOne({ publicId });
 
@@ -90,10 +90,50 @@ export class ProfilesModel{
         }
     };
 
+    static async getProfileByOwner({ owner }) {
+        try {
+            const client = await getMongoDB();
+            const collection = client.collection(PROFILES_COLLECTION);
+
+            const result = await collection.findOne({ owner });
+
+            if (!result) return {
+                success: false,
+                error: {
+                    status: 404
+                }
+            }
+
+            return {
+                success: true,
+                data: result
+            }
+        } catch(error) {
+            if (error instanceof Error) {
+                console.log('Error in ProfilesModel.getProfileByOwner:\n');
+                console.dir(error);
+
+                return {
+                    success: false,
+                    error: {
+                        status: 500
+                    }
+                }
+            }
+        }
+
+        return {
+            success: false,
+            error: {
+                status: 500
+            }
+        }
+    }
+
     static async createProfile({ profile }) {
         try {
             const client = await getMongoDB();
-            const collection = client.collection(PROFILE_COLLECTION);
+            const collection = client.collection(PROFILES_COLLECTION);
             const result = await collection.insertOne({ profile });
 
             if (!result.acknowledged) return {
@@ -132,7 +172,7 @@ export class ProfilesModel{
     static async updateProfile({ profileId, profile }) {
         try{
             const client = await getMongoDB();
-            const collection = client.collection(PROFILE_COLLECTION);
+            const collection = client.collection(PROFILES_COLLECTION);
 
             const updateResult = await collection.findOneAndUpdate(
                 { profileId },
@@ -179,13 +219,13 @@ export class ProfilesModel{
         }
     };
 
-    static async deleteProfile({ _id }){
+    static async deleteProfile({ profileId }){
         try {
             const client = await getMongoDB();
-            const collection = client.collection(PROFILE_COLLECTION);
+            const collection = client.collection(PROFILES_COLLECTION);
 
             const deleteResult = await collection.deleteOne({
-                _id
+                _id: profileId
             })
 
             if (!deleteResult.acknowledged) {
