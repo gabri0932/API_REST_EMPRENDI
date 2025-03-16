@@ -76,7 +76,10 @@ export class ProfileController{
                 }
             })
         }
-        res.status(200).json({ status: 200, message: 'User profile found.', data: { profile: result.data.profile } })
+        res.status(200).json({ 
+            status: 200, message: 'User profile found.', 
+            data: { profile: result.data.profile }
+         })
 
     }
     static async getProfilesSkills(){}
