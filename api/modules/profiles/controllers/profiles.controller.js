@@ -56,77 +56,30 @@ export class ProfilesController{
 
             return;
         }
+        const {_id} = req.auth.user
+        const result = await ProfilesModel.getProfileByUser({userId: _id})
+        if(!result.success){
+            const status = result.error.status === 404 ? 400 : 500
+           res.status(status).json({
+            status,
+            error: status === 400
+                ? { status: 400, message: 'Bad Request. User does not have an active profile.' }
+                : { status: 500, message: 'Internal Server Error.' }
 
-        const { id } = req.params;
-        
-        const result = await ProfilesService.getProfileByPublicId({ publicId: id });
+           }) 
 
-        if (!result.success) {
-            const status = result.error.status;
-
-            res.status(status).json((
-                status === 404
-                    ? { status: 404, message: `Not Found. Requested profile wasn't found.` }
-                    : { status: 500, message: 'Internal Server Error.' }
-            ));
+            res.status(status).json({
+                status,
+                error: status === 400 ? {
+                    status: 400, message: 'Bad request. User does not have an active profile'
+                }
+                : {
+                    status: 500, message: 'Internal Server Error'
+                }
+            })
         }
+        res.status(200).json({ status: 200, message: 'User profile found.', data: { profile: result.data.profile } })
 
-        const { profile } = result.data;
-
-        res.status(200).json({
-            status: 200,
-            message: 'Profile found.',
-            data: {
-                profile
-            }
-        });
-    }
-
-    static async getProfileByUser(req, res) {
-        if (!req.auth.user) {
-            res.status(400).json({
-                status: 400,
-                message: 'Unauthorized, you need being authenticated to process the request.'
-            });
-
-            return;
-        }
-
-        const { _id } = req.auth.user;
-
-        const getProfileResult = await ProfilesService.getProfileByUser({
-            userId: _id
-        });
-
-        if (!getProfileResult.success) {
-            const status = result.error.status;
-
-            res.status(status).json((
-                status === 404
-                    ? { status: 404, message: 'User does not have an active profile.' }
-                    : { status: 500, message: 'Internal Server Error.' }
-            ));
-        }
-
-        const { profile } = getProfileResult.data;
-
-        res.status(200).json({
-            status: 200,
-            message: 'User profile found.',
-            data: {
-                profile
-            }
-        });
-    }
-
-    static async getProfilesSkills(_, res) {
-        res.status(200).json({
-            status: 200,
-            message: 'Profiles skills retrieved successfully.',
-            data: {
-                skills
-            }
-        });
     }
 
     static async getProfilesServices(_, res){
