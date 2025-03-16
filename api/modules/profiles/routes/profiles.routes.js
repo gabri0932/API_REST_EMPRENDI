@@ -1,12 +1,13 @@
 import { Router } from "express";
+import { ProfilesController } from '../controllers/profiles.controller.js';
 
 const profilesRouter = Router();
 
-profilesRouter.get('/', );
-profilesRouter.get('/:id', );
-profilesRouter.get('/me', );
-profilesRouter.get('/skills', );
-profilesRouter.get('/services', );
+profilesRouter.get('/', ProfilesController.getProfiles);
+profilesRouter.get('/:id', ProfilesController.getProfileByPublicId);
+profilesRouter.get('/me', ProfilesController.getProfileByUser);
+profilesRouter.get('/skills', ProfilesController.getProfilesSkills);
+profilesRouter.get('/services', ProfilesController.getProfilesServices);
 profilesRouter.post('/', );
 profilesRouter.post('/hire/:id', );
 profilesRouter.patch('/', );
