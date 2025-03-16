@@ -5,15 +5,15 @@ export function createProfile(data, userId){
         description: data.description,
         phone: data.phone,
         images: {
-            cover:null,
-            avatar:  null,
+            cover: null,
+            avatar: null,
         },
         role: data.role,
         price: {
             currency: data.price.currency,
             amount: data.price.amount
         },
-        service: data.services,
+        service: data.service,
         technologies: data.technologies,
         createdAt: Date.now()
     }

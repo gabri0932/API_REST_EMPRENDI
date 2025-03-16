@@ -24,6 +24,26 @@ export class ProfilesService {
         }
     }
 
+    static async getProfileByUser({ userId }) {
+        const getProfileResult = await ProfilesModel.getProfileByOwner({
+            owner: userId
+        });
+
+        if (!getProfileResult.success) return {
+            success: false,
+            error: getProfileResult.error
+        }
+
+        const profile = getProfileResult.data;
+
+        return {
+            success: true,
+            data: {
+                profile
+            }
+        }
+    }
+
     static async getProfiles({ skip, limit, filters }) {
         const result = await ProfilesModel.getProfiles({ skip, limit, filters });
 
@@ -97,6 +117,27 @@ export class ProfilesService {
             success: true,
             data: {
                 profile: filteredProfile
+            }
+        }
+    }
+
+    static async updateProfile({ profileId, profile }) {
+        const updateProfileResult = await ProfilesModel.updateProfile({
+            profileId,
+            profile
+        });
+
+        if (!updateProfileResult.success) return {
+            success: false,
+            error: updateProfileResult.error
+        }
+
+        const updatedProfile = updateProfileResult.data;
+
+        return {
+            success: true,
+            data: {
+                profile: updatedProfile
             }
         }
     }

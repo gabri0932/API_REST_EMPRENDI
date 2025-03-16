@@ -20,7 +20,7 @@ export interface ProfileFreelancer extends ProfileProps {
         currency: string, 
         amount: number
     },
-    services: Services[],
+    services: Services,
     technologies: Technologies[],
 }
 

@@ -17,12 +17,10 @@ const validationFreelancerSchema = profileRoleSchema.extend({
         .refine(value => value.toString().slice(0, 2).match(/^(809|829|849)$/), {
             message: 'El número de teléfono debe comenzar con 809, 829 o 849.'
         }),
-    services: z
-        .array(z.enum([
+    service: z.enum([
             'web_development', 'apps_development', 'graphic_design', 'video_editing', 'photography',
             'writing', 'marketing', 'consulting', 'finance', 'translation'
-        ], { message: 'Hay un valor no válido en el array de services.' }))
-        .min(1, { message: 'Debes seleccionar al menos un servicio.' }),
+        ], { message: 'Debe elegir un valor válido como servicio.' }),
     technologies: z
         .array(z.enum([
             'javascript', 'typescript', 'python', 'java', 'php', 'ruby', 'swift', 'html', 'css',

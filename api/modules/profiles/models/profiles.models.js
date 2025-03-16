@@ -193,9 +193,7 @@ export class ProfilesModel {
 
             return {
                 success: true,
-                data: {
-                    user: updateResult
-                }
+                data: updateResult
             }
         } catch(error) {
             if (error instanceof Error) {
