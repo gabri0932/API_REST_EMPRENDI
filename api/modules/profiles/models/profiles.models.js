@@ -14,7 +14,7 @@ export class ProfilesModel {
 
             if (!result) return {
                 success: false,
-                error:{
+                error: {
                     status: 404
                 }
             }

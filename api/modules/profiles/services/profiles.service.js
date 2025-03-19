@@ -9,7 +9,7 @@ export class ProfilesService {
 
         if (!result.success) return {
             success: false,
-            error: result.error === 404
+            error: result.error.status === 404
                 ? { status: 404, message: 'Profile not found.' }
                 : { status: 500, message: 'Internal Server Error.' }
         }

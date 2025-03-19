@@ -5,7 +5,9 @@ import { servicesArray as services } from '../consts/services.js';
 import {
     validateRole,
     validateCustomerProfile,
-    validateFreelancerProfile
+    validateFreelancerProfile,
+    validateCustomerProfileUpdate,
+    validateFreelancerProfileUpdate
 } from '../validators/profiles.validator.js';
 
 export class ProfilesController{
@@ -104,7 +106,7 @@ export class ProfilesController{
         });
 
         if (!getProfileResult.success) {
-            const status = result.error.status;
+            const status = getProfileResult.error.status;
 
             res.status(status).json((
                 status === 404
@@ -247,6 +249,105 @@ export class ProfilesController{
         });
     }
 
-    static async updateProfile(req, res) {}
-    static async deleteProfile(req, res) {}
+    static async updateProfile(req, res) {
+        if (!req.auth.user) {
+            res.status(401).json({
+                status: 401,
+                message: 'Unauthorized, you need being authenticated to process the request.'
+            });
+
+            return;
+        }
+
+        const getUserProfileResult = await ProfilesService.getProfileByUser({
+            userId
+        });
+
+        if (!getUserProfileResult.success) {
+            res.status(getUserProfileResult.error.status).json(
+                getUserProfileResult.error.status === 404
+                    ? { status: 404, message: 'The user does not have an active profile.' }
+                    : { status: 500, message: 'Internal Server Error.' }
+            );
+
+            return;
+        }
+
+        const toUpdate = req.body;
+
+        const validationResult = getUserProfileResult.data.profile.role === 'freelancer'
+            ? validateFreelancerProfileUpdate(toUpdate)
+            : validateCustomerProfileUpdate(toUpdate);
+
+        if (!validationResult.success) {
+            res.status(400).json({
+                status: 400,
+                message: 'Bad Request. Check your body request.',
+                error: JSON.parse(validationResult.error.message)
+            });
+
+            return;
+        }
+
+        const { _id: profileId, ...profileFound } = getUserProfileResult.data
+
+        const profile = {
+            ...profileFound,
+            ...validationResult.data
+        }
+
+        const updateResult = await ProfilesService.updateProfile({
+            profileId,
+            profile
+        });
+
+        if (!updateResult.success) {
+            res.status(500).json({
+                status: 500,
+                message: 'Internal Server Error.'
+            });
+
+            return;
+        }
+
+        const updatedProfile = updateResult.data.profile;
+
+        res.status(200).json({
+            status: 200,
+            message: 'Profile updated successfully.',
+            data: {
+                profile: updatedProfile
+            }
+        });
+    }
+
+    static async deleteProfile(req, res) {
+        if (!req.auth.user) {
+            res.status(401).json({
+                status: 401,
+                message: 'Unauthorized, you need being authenticated to process the request.'
+            });
+
+            return;
+        }
+
+        const userId = req.auth.user._id;
+
+        const getUserProfileResult = await ProfilesService.deleteProfile({
+            userId
+        });
+
+        if (!getUserProfileResult.success) {
+            res.status(getUserProfileResult.error.status).json({
+                ...getUserProfileResult.error
+            });
+
+            return;
+        }
+
+        res.status(200).json({
+            status: 200,
+            message: 'Profile deleted successfully.'
+        });
+    }
 }

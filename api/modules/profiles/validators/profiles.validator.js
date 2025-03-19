@@ -47,7 +47,7 @@ const validationCustomerSchema = profileRoleSchema.extend(
     validationFreelancerSchema.omit({ price: true, services: true, technologies: true })
 );
 
-const validationUpdateCustomerSchema = validationCustomerSchema.extend(
+const validationCustomerUpdateSchema = validationCustomerSchema.extend(
     validationFreelancerUpdateSchema.pick({ publicId: true })
 );
 
@@ -61,4 +61,12 @@ export function validateFreelancerProfile(content) {
 
 export function validateCustomerProfile(content) {
     return validationCustomerSchema.safeParse(content);
+}
+
+export function validateCustomerProfileUpdate(content) {
+    return validationCustomerUpdateSchema.partial().safeParse(content);
+}
+
+export function validateFreelancerProfileUpdate(content) {
+    return validationFreelancerUpdateSchema.partial().safeParse(content);
 }
