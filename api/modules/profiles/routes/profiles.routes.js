@@ -8,9 +8,9 @@ profilesRouter.get('/:id', ProfilesController.getProfileByPublicId);
 profilesRouter.get('/me', ProfilesController.getProfileByUser);
 profilesRouter.get('/skills', ProfilesController.getProfilesSkills);
 profilesRouter.get('/services', ProfilesController.getProfilesServices);
-profilesRouter.post('/', );
-profilesRouter.post('/hire/:id', );
-profilesRouter.patch('/', );
-profilesRouter.delete('/', );
+profilesRouter.post('/', ProfilesController.createProfile);
+profilesRouter.post('/hire/:id', ProfilesController.hireProfile);
+profilesRouter.patch('/', ProfilesController.updateProfile);
+profilesRouter.delete('/', ProfilesController.deleteProfile);
 
 export default profilesRouter;
