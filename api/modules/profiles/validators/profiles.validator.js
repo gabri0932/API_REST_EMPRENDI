@@ -50,3 +50,15 @@ const validationCustomerSchema = profileRoleSchema.extend(
 const validationUpdateCustomerSchema = validationCustomerSchema.extend(
     validationFreelancerUpdateSchema.pick({ publicId: true })
 );
+
+export function validateRole(content) {
+    return profileRoleSchema.safeParse(content);
+}
+
+export function validateFreelancerProfile(content) {
+    return validationFreelancerSchema.safeParse(content);
+}
+
+export function validateCustomerProfile(content) {
+    return validationCustomerSchema.safeParse(content);
+}

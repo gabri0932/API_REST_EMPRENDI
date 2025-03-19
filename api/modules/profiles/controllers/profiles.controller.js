@@ -2,12 +2,17 @@ import { ProfilesService } from '../services/profiles.service.js';
 import { parseQueryParams } from '../../../shared/utils/parseQueryParams.js';
 import { technologiesArray as skills } from '../consts/technologies.js';
 import { servicesArray as services } from '../consts/services.js';
+import {
+    validateRole,
+    validateCustomerProfile,
+    validateFreelancerProfile
+} from '../validators/profiles.validator.js';
 
 export class ProfilesController{
     static async getProfiles(req, res) {
         if (!req.auth.user) {
-            res.status(400).json({
-                status: 400,
+            res.status(401).json({
+                status: 401,
                 message: 'Unauthorized, you need being authenticated to process the request.'
             });
 
@@ -49,8 +54,8 @@ export class ProfilesController{
 
     static async getProfileByPublicId(req, res){
         if (!req.auth.user) {
-            res.status(400).json({
-                status: 400,
+            res.status(401).json({
+                status: 401,
                 message: 'Unauthorized, you need being authenticated to process the request.'
             });
 
@@ -84,8 +89,8 @@ export class ProfilesController{
 
     static async getProfileByUser(req, res) {
         if (!req.auth.user) {
-            res.status(400).json({
-                status: 400,
+            res.status(401).json({
+                status: 401,
                 message: 'Unauthorized, you need being authenticated to process the request.'
             });
 
@@ -139,8 +144,109 @@ export class ProfilesController{
         });
     }
 
-    static async createProfile(){}
-    static async hireProfile(){}
-    static async updateProfile(){}
-    static async deleteProfile(){}
+    static async createProfile(req, res){
+        if (!req.auth.user) {
+            res.status(401).json({
+                status: 401,
+                message: 'Unauthorized, you need being authenticated to process the request.'
+            });
+
+            return;
+        }
+
+        const userId = req.auth.user._id;
+        const reqBody = req.body;
+        const roleValidation = validateRole(reqBody);
+
+        if (!roleValidation.success) {
+            res.status(400).json({
+                status: 400,
+                message: 'Bad Request, check your body request.',
+                error: JSON.parse(roleValidation.error.message)
+            });
+
+            return;
+        }
+
+        const { role } = roleValidation.data;
+
+        const accordValidationResult = role === 'customer'
+            ? validateCustomerProfile(reqBody)
+            : validateFreelancerProfile(reqBody);
+
+        if (!accordValidationResult.success) {
+            res.status(400).json({
+                status: 400,
+                message: 'Bad Request, check your body request.',
+                error: JSON.parse(accordValidationResult.error.message)
+            });
+
+            return;
+        }
+
+        const newProfile = accordValidationResult.data;
+
+        const creationResult = await ProfilesService.createProfile({
+            userId,
+            newProfile
+        });
+
+        if (!creationResult.success) {
+            res.status(creationResult.error.status).json({
+                status: creationResult.error.status,
+                message: creationResult.error.message
+            });
+
+            return;
+        }
+
+        const { profile } = creationResult.data;
+
+        res.status(201).json({
+            status: 201,
+            message: 'Profile created successfully.',
+            data: {
+                profile
+            }
+        });
+    }
+
+    static async hireProfile(req, res) {
+        if (!req.auth.user) {
+            res.status(401).json({
+                status: 401,
+                message: 'Unauthorized, you need being authenticated to process the request.'
+            });
+
+            return;
+        }
+
+        const userId = req.auth.user._id;
+        const { id } = req.params;
+
+        const hireResult = await ProfilesService.hireProfile({
+            userId,
+            profileIdToHire: id
+        });
+
+        if (!hireResult.success) {
+            res.status(hireResult.error.status).json({
+                status: hireResult.error.status,
+                message: hireResult.error.message
+            });
+
+            return result;
+        }
+
+        const hiredProfileData = hireResult.data;
+
+        res.status(200).json({
+            status: 200,
+            message: 'Profile hired successfully.',
+            data: hiredProfileData
+        });
+    }
+
+    static async updateProfile(req, res) {}
+    static async deleteProfile(req, res) {}
 }
