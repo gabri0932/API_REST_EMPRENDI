@@ -262,7 +262,8 @@ export class ProfilesController{
 
             return;
         }
-
+        
+        const userId = req.auth.user._id;
         const getUserProfileResult = await ProfilesService.getProfileByUser({
             userId
         });
