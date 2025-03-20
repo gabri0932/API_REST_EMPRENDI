@@ -227,6 +227,7 @@ export class ProfilesModel {
             })
 
             if (!deleteResult.acknowledged) {
+                console.log('error de acknowledged')
                 return {
                     success: false,
                     error: {
@@ -236,6 +237,7 @@ export class ProfilesModel {
             }
 
             if (!deleteResult.deleteCount) {
+                console.log('error de deleteCount')
                 return {
                     success: false,
                     error: {
@@ -261,6 +263,8 @@ export class ProfilesModel {
                 }
             }
         }
+
+        console.log('error idiota?')
 
         return {
             success: false,

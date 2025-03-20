@@ -342,6 +342,8 @@ export class ProfilesController{
             userId
         });
 
+        console.log('Lo que llega el controller:', getUserProfileResult);
+
         if (!getUserProfileResult.success) {
             res.status(getUserProfileResult.error.status).json({
                 ...getUserProfileResult.error
