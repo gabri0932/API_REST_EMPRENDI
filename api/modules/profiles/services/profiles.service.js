@@ -232,7 +232,7 @@ export class ProfilesService {
             success: false,
             error: getProfileResult.error.status === 404
                 ? { status: 400, message: 'Bad Request. User does not have an active profile.' }
-                : { status: 500, message: 'Internal Server Error.' }
+                : { status: 500, message: 'Internal Server Error. Something went wrong finding users profile.' }
         }
 
         const { _id: profileId } = getProfileResult.data;
