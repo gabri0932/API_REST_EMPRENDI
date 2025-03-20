@@ -295,7 +295,7 @@ export class ProfilesController{
         }
 
         const { _id: profileId, ...profileFound } = getUserProfileResult.data
-
+        
         const profile = {
             ...profileFound,
             ...validationResult.data
