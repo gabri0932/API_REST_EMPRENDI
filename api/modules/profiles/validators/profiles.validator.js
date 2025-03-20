@@ -11,12 +11,9 @@ const validationFreelancerSchema = profileRoleSchema.extend({
         .string()
         .max(500, { message: 'La descripción no puede superar los 500 caracteres.' })
         .optional(),
-    phone: z
-        .number()
-        .refine(value => value.toString().length !== 10, { message: 'El número de teléfono debe tener 10 dígitos.' })
-        .refine(value => value.toString().slice(0, 2).match(/^(809|829|849)$/), {
-            message: 'El número de teléfono debe comenzar con 809, 829 o 849.'
-        }),
+    phone: z.string().regex(/^(809|829|849)\d{7}$/, {
+        message: 'El número de teléfono debe tener 10 dígitos y comenzar con 809, 829 o 849.'
+    }),
     service: z.enum([
             'web_development', 'apps_development', 'graphic_design', 'video_editing', 'photography',
             'writing', 'marketing', 'consulting', 'finance', 'translation'
