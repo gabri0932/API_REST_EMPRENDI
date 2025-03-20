@@ -6,7 +6,7 @@
   "packageManager": "pnpm@10.6.5",
   "scripts": {
     "start": "node ./dist/index.js",
-    "dev": "node --watch app.js",
+    "dev": "node --watch app.js"
   },
   "dependencies": {
     "bcrypt": "5.1.1",
