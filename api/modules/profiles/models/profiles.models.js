@@ -1,6 +1,7 @@
 import { getMongoDB } from '../../../app/databases/mongo.db.js';
 import { applyFilters } from '../utils/applyFilters.js';
 import 'dotenv/config';
+import { ObjectId } from 'mongodb';
 
 const PROFILES_COLLECTION = process.env.PROFILES_COLLECTION;
 
@@ -133,7 +134,7 @@ export class ProfilesModel {
         try {
             const client = await getMongoDB();
             const collection = client.collection(PROFILES_COLLECTION);
-            const result = await collection.insertOne({ profile });
+            const result = await collection.insertOne(profile);
 
             if (!result.acknowledged) return {
                 success: false,
