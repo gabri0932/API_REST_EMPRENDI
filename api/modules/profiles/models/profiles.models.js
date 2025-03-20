@@ -1,7 +1,6 @@
 import { getMongoDB } from '../../../app/databases/mongo.db.js';
 import { applyFilters } from '../utils/applyFilters.js';
 import 'dotenv/config';
-import { ObjectId } from 'mongodb';
 
 const PROFILES_COLLECTION = process.env.PROFILES_COLLECTION;
 
