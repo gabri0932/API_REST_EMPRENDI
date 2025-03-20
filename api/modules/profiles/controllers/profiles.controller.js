@@ -130,7 +130,7 @@ export class ProfilesController{
         });
     }
 
-    static getProfilesSkills(req, res) {
+    static getProfilesSkills(_, res) {
         res.status(200).json({
             status: 200,
             message: 'Profiles skills retrieved successfully.',
@@ -140,7 +140,7 @@ export class ProfilesController{
         });
     }
 
-    static getProfilesServices(req, res){
+    static getProfilesServices(_, res){
         res.status(200).json({
             status: 200,
             message: 'Profiles services retrieved successfully.',
@@ -341,8 +341,6 @@ export class ProfilesController{
         const getUserProfileResult = await ProfilesService.deleteProfile({
             userId
         });
-
-        console.log('Lo que llega el controller:', getUserProfileResult);
 
         if (!getUserProfileResult.success) {
             res.status(getUserProfileResult.error.status).json({

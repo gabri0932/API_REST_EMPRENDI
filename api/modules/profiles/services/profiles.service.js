@@ -239,8 +239,6 @@ export class ProfilesService {
 
         const deleteResult = await ProfilesModel.deleteProfile({ profileId });
 
-        console.log('deleteResult del Service:', deleteResult);
-
         if (!deleteResult.success) return {
             success: false,
             error: {
