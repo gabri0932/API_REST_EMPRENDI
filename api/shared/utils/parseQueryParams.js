@@ -13,12 +13,12 @@ export function parseQueryParams(query) {
     
     const queries = {
         page: query.page,
-        limit: page.limit,
-        name: page.name,
-        service: page.service,
-        technology: page.technology,
-        minPrice: page.minPrice,
-        maxPrice: page.maxPrice,
+        limit: query.limit,
+        name: query.name,
+        service: query.service,
+        technology: query.technology,
+        minPrice: query.minPrice,
+        maxPrice: query.maxPrice,
     }
 
     filters.page = !isNaN(Number(queries.page))

@@ -76,6 +76,8 @@ export class ProfilesController{
                     ? { status: 404, message: `Not Found. Requested profile wasn't found.` }
                     : { status: 500, message: 'Internal Server Error.' }
             ));
+
+            return;
         }
 
         const { profile } = result.data;
@@ -113,6 +115,8 @@ export class ProfilesController{
                     ? { status: 404, message: 'User does not have an active profile.' }
                     : { status: 500, message: 'Internal Server Error.' }
             ));
+
+            return;
         }
 
         const { profile } = getProfileResult.data;
@@ -126,7 +130,7 @@ export class ProfilesController{
         });
     }
 
-    static async getProfilesSkills(_, res) {
+    static getProfilesSkills(req, res) {
         res.status(200).json({
             status: 200,
             message: 'Profiles skills retrieved successfully.',
@@ -136,7 +140,7 @@ export class ProfilesController{
         });
     }
 
-    static async getProfilesServices(_, res){
+    static getProfilesServices(req, res){
         res.status(200).json({
             status: 200,
             message: 'Profiles services retrieved successfully.',

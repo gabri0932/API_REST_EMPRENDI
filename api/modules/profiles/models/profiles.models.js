@@ -51,7 +51,6 @@ export class ProfilesModel {
             const collection = client.collection(PROFILES_COLLECTION);
 
             const appliedFilters = applyFilters(filters);
-            console.log('appliedFilters:', appliedFilters);
             const normalizedFilters = appliedFilters.length && appliedFilters.length > 1
                 ? { $and: appliedFilters }
                 : appliedFilters[0] || {};
