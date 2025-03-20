@@ -225,8 +225,6 @@ export class ProfilesModel {
                 _id: profileId
             });
 
-            console.log(deleteResult);
-
             if (!deleteResult.acknowledged) {
                 return {
                     success: false,
@@ -236,7 +234,7 @@ export class ProfilesModel {
                 }
             }
 
-            if (!deleteResult.deleteCount) {
+            if (!deleteResult.deletedCount) {
                 return {
                     success: false,
                     error: {
