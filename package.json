@@ -3,6 +3,7 @@
   "name": "api-emprendimiento",
   "version": "1.0.0",
   "main": "app.js",
+  "packageManager": "pnpm@10.6.5",
   "scripts": {
     "start": "node ./dist/index.js",
     "dev": "node --watch app.js",
