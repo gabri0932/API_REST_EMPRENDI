@@ -8,7 +8,8 @@ const app = express()
 
 // Top level middlewares
 app.use(express.json());
-app.use(authRestMiddleware)
+app.use(corsMiddleware);
+app.use(authRestMiddleware);
 
 // Routes.
 app.get('/', (req, res) => {
