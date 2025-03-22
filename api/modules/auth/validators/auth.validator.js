@@ -16,18 +16,12 @@ const userSchema = userInputSchema.extend({
         .max(50, { message: "El nombre no puede superar los 50 caracteres" })
 });
 
-const userWithRoleSchema = userSchema.extend({
-    role: z.enum(["freelancer", "customer"], {
-        errorMap: () => ({ message: "El rol debe ser 'freelancer' o 'customer'" })
-    })
-})
-
 export function validateUserInput(content) {
     return userInputSchema.safeParse(content);
 }
 
 export function validateUserCreation(content) {
-    return userWithRoleSchema.safeParse(content);
+    return userSchema.safeParse(content);
 }
 
 export function validateUserUpdateInput(content) {

@@ -18,7 +18,6 @@ app.get('/', (req, res) => {
         message: 'API Working...'
     });
 });
-
 app.use(apiRoutes);
 
 // Bottom level middlewares.
