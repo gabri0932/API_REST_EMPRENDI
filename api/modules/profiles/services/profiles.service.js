@@ -75,7 +75,7 @@ export class ProfilesService {
             success: false,
             error: {
                 status: 403,
-                message: 'Profile already exists.'
+                message: 'User already has an active profile'
             }
         }
 
