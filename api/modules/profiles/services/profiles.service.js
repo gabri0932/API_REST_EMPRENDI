@@ -74,7 +74,7 @@ export class ProfilesService {
         if (hasProfile.success) return {
             success: false,
             error: {
-                status: 400,
+                status: 403,
                 message: 'Profile already exists.'
             }
         }
