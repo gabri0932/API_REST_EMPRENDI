@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { servicesIdentifiersArray } from '../consts/services.js';
+import { technologiesIdentifiersArray } from '../consts/technologies.js';
 
 const profileRoleSchema = z.object({
     role: z.enum([
@@ -14,18 +16,12 @@ const validationFreelancerSchema = profileRoleSchema.extend({
     phone: z.string().regex(/^(809|829|849)\d{7}$/, {
         message: 'El número de teléfono debe tener 10 dígitos y comenzar con 809, 829 o 849.'
     }),
-    service: z.enum([
-            'web_development', 'apps_development', 'graphic_design', 'video_editing', 'photography',
-            'writing', 'marketing', 'consulting', 'finance', 'translation'
-        ], { message: 'Debe elegir un valor válido como servicio.' }),
+    service: z.enum(servicesIdentifiersArray, { message: 'Debe elegir un valor válido como servicio.' }),
     technologies: z
-        .array(z.enum([
-            'javascript', 'typescript', 'python', 'java', 'php', 'ruby', 'swift', 'html', 'css',
-            'react', 'vue', 'angular', 'nodejs', 'express', 'android', 'ios', 'postgresql', 'sqlite', 'mongodb'
-        ], { message: 'Hay un valor no válido en el array de technologies.' }))
+        .array(z.enum(technologiesIdentifiersArray, { message: 'Hay un valor no válido en el array de technologies.' }))
         .min(1, { message: 'Debes seleccionar al menos una tecnología.' }),
     price: z.object({
-        currency: z.enum(['usd', 'eur', 'dop'], { message: 'La moneda debe ser USD, EUR o DOP.' }),
+        currency: z.enum(['usd', 'eur', 'dop'], { message: 'La moneda debe ser "usd", "eur" o "dop".' }),
         amount: z.number().min(0, { message: 'El monto debe ser un número positivo.' }),
     })
 });

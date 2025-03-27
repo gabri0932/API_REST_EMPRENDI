@@ -22,3 +22,5 @@ export const technologies = {
 }
 
 export const technologiesArray = Object.values(technologies).map(technology => technology);
+export const technologiesIdentifiersArray = Object.values(technologies).map(technology => technology.identifier);
+export const technologiesNamesArray = Object.values(technologies).map(technology => technology.name);

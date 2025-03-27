@@ -12,3 +12,5 @@ export const services = {
 }
 
 export const servicesArray = Object.values(services).map(service => service);
+export const servicesIdentifiersArray = Object.values(services).map(service => service.identifier);
+export const servicesNamesArray = Object.values(services).map(service => service.name);
