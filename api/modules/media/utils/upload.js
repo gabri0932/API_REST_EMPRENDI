@@ -1,4 +1,5 @@
 import multer from 'multer';
+import { FileError } from '../classes/FileError.js';
 import { FIELD_NAME } from '../constants/images.constants.js';
 
 const fileFilter = (_req, file, callback) => {
@@ -6,7 +7,7 @@ const fileFilter = (_req, file, callback) => {
     const isValidType = allowedTypes.test(file.mimetype);
 
     if (!isValidType) {
-        callback(new Error({ fileErrorType: 'INVALID_TYPE' }));
+        callback(new FileError('File type error.', { code: 'INVALID_FILE_TYPE' }));
     }
 
     callback(null, true);
