@@ -52,8 +52,8 @@ export class ProfilesModel {
 
             const appliedFilters = applyFilters(filters);
             const normalizedFilters = appliedFilters.length && appliedFilters.length > 1
-                ? { $and: { ...appliedFilters, role: 'freelancer' }
-                : { ...appliedFilters[0], role: 'freelancer' || { role: 'freelancer' };
+                ? { $and: appliedFilters.push({ role: 'freelancer' }) }
+                : { role: 'freelancer', ...appliedFilters[0] } || { role: 'freelancer' };
 
             const getProfilesResult = await collection.find(
                 normalizedFilters

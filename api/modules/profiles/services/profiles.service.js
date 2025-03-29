@@ -1,7 +1,6 @@
 import { UserService } from '../../users/services/user.service.js';
 import { ProfilesModel } from '../models/profiles.models.js';
 import { createProfile } from '../utils/createProfile.js';
-import { filterProfiles } from '../utils/filterProfiles.js';
 
 export class ProfilesService {
     static async getProfileByPublicId({ publicId }) {
@@ -107,17 +106,15 @@ export class ProfilesService {
             }
         }
 
-        const filteredProfile = filterProfiles(
-            {
-                _id: createProfileResult.data,
-                ...profile
-            }
-        );
+        const createdProfile = {
+            _id: createProfileResult.data,
+            ...profile
+        }
 
         return {
             success: true,
             data: {
-                profile: filteredProfile
+                profile: createdProfile
             }
         }
     }
@@ -147,7 +144,7 @@ export class ProfilesService {
         }
 
         const getProfileToHireResult = await this.getProfileByPublicId({
-            userId: profileIdToHire
+            publicId: profileIdToHire
         });
 
         if (!getProfileToHireResult.success) return {

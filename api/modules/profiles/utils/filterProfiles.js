@@ -1,7 +1,7 @@
-export function filterProfiles(profiles) {
-    if (Array.isArray(profiles)) {
-        return profiles.map(({ owner, phone, email, ...rest }) => rest);
+export function filterProfiles(data) {
+    if (Array.isArray(data)) {
+        return data.map(({ owner, phone, email, ...rest }) => rest);
     }
-    const { owner, phone, email, ...filteredProfile } = profiles;
+    const { owner, phone, email, ...filteredProfile } = data;
     return filteredProfile;
 }

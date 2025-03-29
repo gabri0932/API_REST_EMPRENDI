@@ -9,6 +9,7 @@ import {
     validateCustomerProfileUpdate,
     validateFreelancerProfileUpdate
 } from '../validators/profiles.validator.js';
+import { filterProfiles } from '../utils/filterProfiles.js';
 
 export class ProfilesController{
     static async getProfiles(req, res) {
@@ -41,6 +42,7 @@ export class ProfilesController{
         }
 
         const { profiles, count: profilesCount } = getProfilesResult.data;
+        const filteredProfiles = filterProfiles(profiles);
 
         res.status(200).json({
             status: 200,
@@ -49,7 +51,7 @@ export class ProfilesController{
             limit,
             profilesCount,
             data: {
-                profiles
+                profiles: filteredProfiles
             }
         });
     }
@@ -80,7 +82,7 @@ export class ProfilesController{
             return;
         }
 
-        const { profile } = result.data;
+        const profile = filterProfiles(result.data.profile);
 
         res.status(200).json({
             status: 200,
