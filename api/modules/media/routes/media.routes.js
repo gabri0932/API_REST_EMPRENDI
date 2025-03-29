@@ -5,7 +5,8 @@ import { fileSizeMiddleware } from '../middlewares/fileSize.middleware.js';
 
 const mediaRouter = Router();
 
-mediaRouter.get('/images/:name', MediaController.getImageByName);
+mediaRouter.get('/images/avatars/:name', MediaController.getAvatarImageByName);
+mediaRouter.get('/images/covers/:name', MediaController.getCoverImageByName);
 mediaRouter.post('/images/avatar', upload, fileSizeMiddleware, MediaController.saveAvatarImage);
 mediaRouter.post('/images/cover', upload, fileSizeMiddleware, MediaController.saveCoverImage);
 mediaRouter.delete('/images/avatar', MediaController.deleteAvatarImage);

@@ -65,6 +65,27 @@ export class ProfilesService {
         }
     }
 
+    static async getProfileWithFile({ name }) {
+        const result = await ProfilesModel.getProfileWithFile({
+            file: name
+        });
+
+        if (!result.success) {
+            const { status } = result.error;
+
+            const error = status === 404
+                ? { success: false, error: { status: 404, message: 'File not found.' } }
+                : { success: false, error: { status: 500, message: 'Internal Server Error.' } }
+
+            return error;
+        }
+
+        return {
+            success: true,
+            profile: result.data.profile
+        }
+    }
+
     static async createProfile({ userId, newProfile }) {
         const hasProfile = await ProfilesModel.getProfileByOwner({
             owner: userId
@@ -217,6 +238,28 @@ export class ProfilesService {
             data: {
                 profile: updatedProfile
             }
+        }
+    }
+
+    static async updateProfileImages({ profileId, images }) {
+        const result = await ProfilesModel.updateProfileImages({
+            profileId,
+            images
+        });
+        
+        if (!result.success) {
+            const { status } = result.error;
+
+            const error = status === 404
+                ? { success: false, error: { status: 404, message: 'Profile to update not found.' } }
+                : { success: false, error: { status: 500, message: 'Internal Server Error.' } }
+
+            return error;
+        }
+
+        return {
+            success: true,
+            profile: result.data.profile
         }
     }
 

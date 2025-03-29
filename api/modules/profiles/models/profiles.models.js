@@ -129,6 +129,46 @@ export class ProfilesModel {
         }
     }
 
+    static async getProfileWithFile({ file }) {
+        try {
+            const client = await getMongoDB();
+            const collection = client.collection(PROFILES_COLLECTION);
+
+            const findResult = await collection.findOne({
+                $or: [
+                    { 'images.avatar': file },
+                    { 'images.cover': file }
+                ]
+            });
+
+            if (!findResult) return {
+                success: false,
+                error: {
+                    status: 404
+                }
+            }
+
+            return {
+                success: true,
+                data: {
+                    profile: findResult
+                }
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error('Error in ProfilesModel.imagePathExists():\n');
+                console.dir(error, { depth: null });
+
+                return {
+                    success: false,
+                    error: {
+                        status: 500
+                    }
+                }
+            }
+        }
+    }
+
     static async createProfile({ profile }) {
         try {
             const client = await getMongoDB();
@@ -174,8 +214,8 @@ export class ProfilesModel {
             const collection = client.collection(PROFILES_COLLECTION);
 
             const updateResult = await collection.findOneAndUpdate(
-                { profileId },
-                { $set: profile },
+                { _id: profileId },
+                { $set: { ...profile } },
                 {
                     returnDocument: 'after'
                 }
@@ -215,6 +255,52 @@ export class ProfilesModel {
             }
         }
     };
+
+    static async updateProfileImages({ profileId, images }) {
+        try {
+            const client = await getMongoDB();
+            const collection = client.collection(PROFILES_COLLECTION);
+
+            const toUpdate = {};
+
+            if (images.avatar) toUpdate.avatar = images.avatar;
+            if (images.cover) toUpdate.cover = images.cover;
+            if (images.avatar === null) toUpdate.avatar = null;
+            if (images.cover === null) toUpdate.cover = null;
+
+            const updateResult = findOneAndUpdate(
+                { profileId },
+                { $set: { images: toUpdate } },
+                { returnDocument: 'after' }
+            );
+
+            if (!updateResult) return {
+                success: false,
+                error: {
+                    status: 404
+                }
+            }
+
+            return {
+                success: true,
+                data: {
+                    profile: updateResult
+                }
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                console.log('Error in ProfilesModel.updateProfileImages():\n');
+                console.dir(error, { depth: null });
+
+                return {
+                    success: false,
+                    error: {
+                        status: 500
+                    }
+                }
+            }
+        }
+    }
 
     static async deleteProfile({ profileId }){
         try {

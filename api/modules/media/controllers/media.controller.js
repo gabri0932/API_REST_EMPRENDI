@@ -1,5 +1,16 @@
 export class MediaController {
-    static async getImageByName(req, res) {
+    static async getAvatarImageByName(req, res) {
+        if (!req.auth.user) {
+            res.status(401).json({
+                status: 401,
+                message: 'Unauthorized, you need being authenticated to process the request.'
+            });
+
+            return;
+        }
+    };
+
+    static async getCoverImageByName(req, res) {
         if (!req.auth.user) {
             res.status(401).json({
                 status: 401,
