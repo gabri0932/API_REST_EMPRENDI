@@ -11,8 +11,8 @@ const profileRoleSchema = z.object({
 const validationFreelancerSchema = profileRoleSchema.extend({
     description: z
         .string()
-        .max(500, { message: 'La descripción no puede superar los 500 caracteres.' })
-        .optional(),
+        .min(50, { message: 'La descripción debe tener al menos 50 caracteres.' })
+        .max(500, { message: 'La descripción no puede superar los 500 caracteres.' }),
     phone: z.string().regex(/^(809|829|849)\d{7}$/, {
         message: 'El número de teléfono debe tener 10 dígitos y comenzar con 809, 829 o 849.'
     }),
@@ -34,15 +34,24 @@ const validationFreelancerUpdateSchema = validationFreelancerSchema.extend({
         .regex(/^[a-zA-Z0-9._]+$/, {
             message: 'El identificador solo puede contener letras, números, puntos y guiones bajos.',
         })
+}).omit({ role: true });
+
+const validationCustomerSchema = profileRoleSchema.extend({
+    description: z
+        .string()
+        .min(50, { message: 'La descripción debe tener al menos 50 caracteres.' })
+        .max(500, { message: 'La descripción no puede superar los 500 caracteres.' })
 });
 
-const validationCustomerSchema = profileRoleSchema.extend(
-    validationFreelancerSchema.omit({ price: true, services: true, technologies: true })
-);
-
-const validationCustomerUpdateSchema = validationCustomerSchema.extend(
-    validationFreelancerUpdateSchema.pick({ publicId: true })
-);
+const validationCustomerUpdateSchema = validationCustomerSchema.extend({
+    publicId: z
+        .string()
+        .min(3, { message: 'El identificador debe tener al menos 3 caracteres.' })
+        .max(30, { message: 'El identificador no puede superar los 30 caracteres.' })
+        .regex(/^[a-zA-Z0-9._]+$/, {
+            message: 'El identificador solo puede contener letras, números, puntos y guiones bajos.',
+        })
+}).omit({ role: true });
 
 export function validateRole(content) {
     return profileRoleSchema.safeParse(content);
