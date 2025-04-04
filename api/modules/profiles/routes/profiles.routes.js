@@ -11,6 +11,7 @@ profilesRouter.get('/:id', ProfilesController.getProfileByPublicId);
 profilesRouter.post('/', ProfilesController.createProfile);
 profilesRouter.post('/hire/:id', ProfilesController.hireProfile);
 profilesRouter.patch('/', ProfilesController.updateProfile);
+profilesRouter.patch('/images', ProfilesController.updateProfileImages);
 profilesRouter.delete('/', ProfilesController.deleteProfile);
 
 export default profilesRouter;

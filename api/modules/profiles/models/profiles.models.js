@@ -1,3 +1,4 @@
+import { constants } from 'node:fs';
 import { getMongoDB } from '../../../app/databases/mongo.db.js';
 import { applyFilters } from '../utils/applyFilters.js';
 import 'dotenv/config';
@@ -261,16 +262,9 @@ export class ProfilesModel {
             const client = await getMongoDB();
             const collection = client.collection(PROFILES_COLLECTION);
 
-            const toUpdate = {};
-
-            if (images.avatar) toUpdate.avatar = images.avatar;
-            if (images.cover) toUpdate.cover = images.cover;
-            if (images.avatar === null) toUpdate.avatar = null;
-            if (images.cover === null) toUpdate.cover = null;
-
-            const updateResult = findOneAndUpdate(
-                { profileId },
-                { $set: { images: toUpdate } },
+            const updateResult = await collection.findOneAndUpdate(
+                { _id: profileId },
+                { $set: { images } },
                 { returnDocument: 'after' }
             );
 

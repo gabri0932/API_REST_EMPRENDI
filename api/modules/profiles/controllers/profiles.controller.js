@@ -4,6 +4,7 @@ import { technologiesArray as skills } from '../consts/technologies.js';
 import { servicesArray as services } from '../consts/services.js';
 import {
     validateRole,
+    validateImageUpdate,
     validateCustomerProfile,
     validateFreelancerProfile,
     validateCustomerProfileUpdate,
@@ -322,6 +323,71 @@ export class ProfilesController{
         res.status(200).json({
             status: 200,
             message: 'Profile updated successfully.',
+            data: {
+                profile: updatedProfile
+            }
+        });
+    }
+
+    static async updateProfileImages(req, res) {
+        if (!req.auth.user) {
+            res.status(401).json({
+                status: 401,
+                message: 'Unauthorized, you need being authenticated to process the request.'
+            });
+
+            return;
+        }
+
+        const userId = req.auth.user._id;
+        const getUserProfile = await ProfilesService.getProfileByUser({
+            userId
+        });
+
+        if (!getUserProfile.success) {
+            res.status(getUserProfile.error.status).json({
+                status: getUserProfile.error.status,
+                message: getUserProfile.error.message
+            });
+
+            return;
+        }
+
+        const profileId = getUserProfile.data.profile._id;
+
+        const validationResult = validateImageUpdate(req.body);
+
+        if (!validationResult.success) {
+            res.status(400).json({
+                status: 400,
+                message: 'Bad Request, check your body request.',
+                error: JSON.parse(validationResult.error.message)
+            });
+
+            return;
+        }
+
+        const { data: images } = validationResult;
+
+        const updateResult = await ProfilesService.updateProfileImages({
+            profileId,
+            images
+        });
+
+        if (!updateResult.success) {
+            res.status(updateResult.error.status).json({
+                status: updateResult.error.status,
+                message: updateResult.error.message
+            });
+
+            return;
+        }
+
+        const updatedProfile = updateResult.data.profile;
+
+        res.status(200).json({
+            status: 200,
+            message: 'Profile image(s) updated successfully.',
             data: {
                 profile: updatedProfile
             }

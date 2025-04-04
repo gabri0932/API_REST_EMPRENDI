@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { nullable, z } from 'zod';
 import { servicesIdentifiersArray } from '../consts/services.js';
 import { technologiesIdentifiersArray } from '../consts/technologies.js';
 
@@ -36,6 +36,11 @@ const validationFreelancerUpdateSchema = validationFreelancerSchema.extend({
         })
 }).omit({ role: true });
 
+const validateImageUpdateSchema = z.object({
+    avatar: nullable(z.string().url({ message: 'La URL de la imagen de perfil no es válida.' })),
+    cover: nullable(z.string().url({ message: 'La URL de la imagen de portada no es válida.' })),
+});
+
 const validationCustomerSchema = profileRoleSchema.extend({
     description: z
         .string()
@@ -52,6 +57,10 @@ const validationCustomerUpdateSchema = validationCustomerSchema.extend({
             message: 'El identificador solo puede contener letras, números, puntos y guiones bajos.',
         })
 }).omit({ role: true });
+
+export function validateImageUpdate(content) {
+    return validateImageUpdateSchema.partial().safeParse(content);
+}
 
 export function validateRole(content) {
     return profileRoleSchema.safeParse(content);

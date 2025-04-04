@@ -242,9 +242,17 @@ export class ProfilesService {
     }
 
     static async updateProfileImages({ profileId, images }) {
+        const toUpdate = {
+            avatar: null,
+            cover: null
+        };
+
+        if (images.avatar) toUpdate.avatar = images.avatar;
+        if (images.cover) toUpdate.cover = images.cover;
+
         const result = await ProfilesModel.updateProfileImages({
             profileId,
-            images
+            images: toUpdate
         });
         
         if (!result.success) {
@@ -259,7 +267,9 @@ export class ProfilesService {
 
         return {
             success: true,
-            profile: result.data.profile
+            data: {
+                profile: result.data.profile
+            }
         }
     }
 
