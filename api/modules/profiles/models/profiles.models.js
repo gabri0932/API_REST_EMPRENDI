@@ -85,7 +85,7 @@ export class ProfilesModel {
         }
     }
 
-    static async getProfiles({ skip, limit, filters }) {
+    static async getProfiles({ skip, filters }) {
         try {
             const client = await getMongoDB();
             const collection = client.collection(PROFILES_COLLECTION);
@@ -97,7 +97,7 @@ export class ProfilesModel {
 
             const getProfilesResult = await collection.find(
                 normalizedFilters
-            ).skip(skip).limit(limit).toArray();
+            ).skip(skip).toArray();
             const profilesCount = await collection.countDocuments(normalizedFilters);
 
             return {

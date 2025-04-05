@@ -23,13 +23,12 @@ export class ProfilesController{
             return;
         }
 
-        const { page, limit, ...filters } = parseQueryParams(req.query);
+        const { page, limit: _, ...filters } = parseQueryParams(req.query);
 
         const skip = (page - 1) * limit;
 
         const getProfilesResult = await ProfilesService.getProfiles({
             skip,
-            limit,
             filters
         });
 

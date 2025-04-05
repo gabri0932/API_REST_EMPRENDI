@@ -43,8 +43,8 @@ export class ProfilesService {
         }
     }
 
-    static async getProfiles({ skip, limit, filters }) {
-        const result = await ProfilesModel.getProfiles({ skip, limit, filters });
+    static async getProfiles({ skip, filters }) {
+        const result = await ProfilesModel.getProfiles({ skip, filters });
 
         if (!result.success) return {
             success: false,
