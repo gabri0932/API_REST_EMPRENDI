@@ -242,10 +242,7 @@ export class ProfilesService {
     }
 
     static async updateProfileImages({ profileId, images }) {
-        const toUpdate = {
-            avatar: null,
-            cover: null
-        };
+        const toUpdate = {};
 
         if (images.avatar) toUpdate.avatar = images.avatar;
         if (images.cover) toUpdate.cover = images.cover;
