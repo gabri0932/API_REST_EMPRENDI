@@ -23,9 +23,9 @@ export class ProfilesController{
             return;
         }
 
-        const { page, limit: _, ...filters } = parseQueryParams(req.query);
+        const { page: __, limit: _, ...filters } = parseQueryParams(req.query);
 
-        const skip = (page - 1) * limit;
+        const skip = 0;
 
         const getProfilesResult = await ProfilesService.getProfiles({
             skip,
@@ -47,8 +47,6 @@ export class ProfilesController{
         res.status(200).json({
             status: 200,
             message: 'Profiles found successfully.',
-            page,
-            limit,
             profilesCount,
             data: {
                 profiles: filteredProfiles
