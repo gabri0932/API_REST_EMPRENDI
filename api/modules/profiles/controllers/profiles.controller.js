@@ -353,7 +353,7 @@ export class ProfilesController{
             return;
         }
 
-        const profileId = getUserProfile.data.profile._id;
+        const { _id: profileId, images: actualImages } = getUserProfile.data.profile;
 
         const validationResult = validateImageUpdate(req.body);
 
@@ -367,11 +367,12 @@ export class ProfilesController{
             return;
         }
 
-        const { data: images } = validationResult;
+        const { data: newImages } = validationResult;
 
         const updateResult = await ProfilesService.updateProfileImages({
             profileId,
-            images
+            actualImages,
+            newImages
         });
 
         if (!updateResult.success) {

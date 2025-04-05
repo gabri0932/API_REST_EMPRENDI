@@ -241,15 +241,20 @@ export class ProfilesService {
         }
     }
 
-    static async updateProfileImages({ profileId, images }) {
+    static async updateProfileImages({ profileId, actualImages, newImages }) {
         const toUpdate = {};
 
-        if (images.avatar) toUpdate.avatar = images.avatar;
-        if (images.cover) toUpdate.cover = images.cover;
+        if (newImages.avatar) toUpdate.avatar = newImages.avatar;
+        if (newImages.cover) toUpdate.cover = newImages.cover;
+
+        const images = {
+            ...actualImages,
+            ...newImages
+        }
 
         const result = await ProfilesModel.updateProfileImages({
             profileId,
-            images: toUpdate
+            images
         });
         
         if (!result.success) {

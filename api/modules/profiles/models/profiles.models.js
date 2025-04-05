@@ -1,4 +1,3 @@
-import { constants } from 'node:fs';
 import { getMongoDB } from '../../../app/databases/mongo.db.js';
 import { applyFilters } from '../utils/applyFilters.js';
 import 'dotenv/config';
@@ -41,6 +40,46 @@ export class ProfilesModel {
         return {
             success: false,
             error:{
+                status: 500
+            }
+        }
+    }
+
+    static async getProfileById({ profileId }) {
+        try {
+            const client = await getMongoDB();
+            const collection = client.collection(PROFILES_COLLECTION);
+
+            const result = await collection.findOne({ _id: profileId });
+
+            if (!result) return {
+                success: false,
+                error: {
+                    status: 404
+                }
+            }
+
+            return {
+                success: true,
+                data: result
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                console.log('Error in ProfilesModel.getProfileById():\n');
+                console.dir(error, { depth: null });
+
+                return {
+                    success: false,
+                    error: {
+                        status: 500
+                    }
+                }
+            }
+        }
+
+        return {
+            success: false,
+            error: {
                 status: 500
             }
         }
